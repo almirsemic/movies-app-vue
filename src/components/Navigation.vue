@@ -2,58 +2,42 @@
   <div>
     <div class="nav-bar">
       <div id="logo">
-        <img src="@/assets/Vector.png" width="154.82" height="18.88" />
+        <a href="/"><img src="@/assets/Vector.png" width="154.82" height="18.88" /></a>
       </div>
       <div class="left-side">
         <ul>
           <li>
-            <a href="/">Movies  v</a>
+            <a>Movies v</a>
             <ul>
-              <li><a href="/">Popular</a></li>
-              <li><a href="/">Now playing</a></li>
-              <li><a href="/">Upcoming</a></li>  
-              <li><a href="/">Top rated</a></li>       
+              <li><a>Popular</a></li>
+              <li><a>Now playing</a></li>
+              <li><a>Upcoming</a></li>
+              <li><a>Top rated</a></li>
             </ul>
           </li>
           <li>
-            <a href="/">TV shows  v</a>
+            <a>TV shows v</a>
             <ul>
-              <li><a href="/">Popular</a></li>      
-              <li><a href="/">Now playing</a></li>
-              <li><a href="/">Upcoming</a></li>
-              <li><a href="/">Top rated</a></li>
+              <li><a>Popular</a></li>
+              <li><a>Now playing</a></li>
+              <li><a>Upcoming</a></li>
+              <li><a>Top rated</a></li>
             </ul>
           </li>
-          <li><a href="/">People</a></li>
+          <li><a>People</a></li>
         </ul>
       </div>
       <div class="right-side">
         <div>
           <ul>
-            <li><a href="/">Login</a></li>
-            <li><a href="/">Join TMDB</a></li>
+            <li><a>Login</a></li>
+            <li><a>Join TMDB</a></li>
           </ul>
         </div>
         <div class="search">
           <img src="@/assets/search.png" width="21" height="20" />
         </div>
       </div>
-    </div>
-    <div class="third-menu">
-      <ul>
-        <router-link to="/overview" exact
-          ><li><a href="#">Overview</a></li></router-link
-        >
-        <router-link to="/casts" exact
-          ><li><a href="#">Casts</a></li></router-link
-        >
-        <router-link to="/reviews" exact
-          ><li><a href="#">Reviews</a></li></router-link
-        >
-        <router-link to="/seasions" exact
-          ><li><a href="#">Seasions</a></li></router-link
-        >
-      </ul>
     </div>
   </div>
 </template>
@@ -140,28 +124,5 @@ export default {
 .search:hover {
   font-size: 10px;
 }
-.third-menu {
-  background-color: #fff;
-  height: 45px;
-}
-.third-menu ul {
-  margin: 10px 30px;
-  margin: 13px 465px;
-}
-.third-menu ul li {
-  display: inline-block;
-  margin-left: 65px;
-  list-style: none;
-}
-.third-menu ul li a {
-  text-decoration: none;
-  font-family: Source Sans Pro;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 16px;
-  color: #000000;
-}
-.third-menu a:hover {
-  color: silver;
-}
+
 </style>

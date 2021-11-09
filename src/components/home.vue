@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p>home</p>
+
     </div>
 </template>
 <script>
@@ -9,7 +9,11 @@ export default {
         return{
 
         }
-    }
+    },
+    created(){
+    const API_KEY = "ffebf14b46dcd2b2bb0af17fdfffaa0c"
+    console.log(API_KEY)
+  },
 }
 </script>
 <style scoped>

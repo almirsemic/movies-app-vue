@@ -1,16 +1,16 @@
 <template>
   <div>
-<navigation></navigation>
-<router-view></router-view>
+<navigationBar></navigationBar>
+<home></home>
   </div>
 </template>
 <script>
-
-import Navigation from "./components/Navigation.vue"
-
+import navigationBar from "./components/navigationBar.vue";
+import home from "./components/home.vue";
 export default {
   components: {
-    "navigation": Navigation,
+    "navigationBar": navigationBar,
+    "home": home,
   }
 }
 </script>

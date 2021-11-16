@@ -1,19 +1,18 @@
 <template>
   <div>
-<navigationBar></navigationBar>
-<home></home>
+    <navigationBar></navigationBar>
+
+    <router-view></router-view>
   </div>
 </template>
 <script>
 import navigationBar from "./components/navigationBar.vue";
-import home from "./components/home.vue";
+
 export default {
   components: {
-    "navigationBar": navigationBar,
-    "home": home,
-  }
-}
+    navigationBar: navigationBar,
+  },
+};
 </script>
 <style scoped>
-
 </style>

@@ -8,19 +8,19 @@
     <div class="movies">
       <button>Movies<img src="@/assets/Vector (3).png" /></button>
       <div class="one">
-        <a>Popular</a>
-        <a>Now playing</a>
-        <a>Upcoming</a>
-        <a>Top rated</a>
+        <a href="/movie/popular">Most Popular</a>
+        <a href="/movie/now_playing">Now Playing</a>
+        <a href="/movie/upcoming">Upcoming</a>
+        <a href="/movie/top_rated">Top Rated</a>
       </div>
     </div>
     <div class="tvshows">
-      <button>Tv shows<img src="@/assets/Vector (3).png" /></button>
+      <button>Tv Shows<img src="@/assets/Vector (3).png" /></button>
       <div class="two">
-        <a>Popular</a>
-        <a>Now playing</a>
-        <a>Upcoming</a>
-        <a>Top rated</a>
+       <a href="/tv/popular">Most Popular</a>
+        <a href="/tv/airing_today">Airing Today</a>
+        <a href="/tv/on_tv">On TV</a>
+        <a href="/tv/top_rated">Top Rated</a>
       </div>
     </div>
     <div class="people">
@@ -30,7 +30,7 @@
       <button>Login</button>
     </div>
     <div class="join">
-      <button>Join DBDM</button>
+      <button>Join TMDB</button>
     </div>
     <div class="search">
       <button>

@@ -1,24 +1,24 @@
-import home from './components/home';
-import movieMostPopular from "./components/movies/movieMostPopular"
-import movieNowPlaying from "./components/movies/movieNowPlaying"
-import movieTopRated from "./components/movies/movieTopRated"
-import movieUpcoming from "./components/movies/movieUpcoming"
-import tvAiringToday from "./components/tvShows/tvAiringToday"
-import tvMostPopular from "./components/tvShows/tvMostPopular"
-import tvOnTv from "./components/tvShows/tvOnTv"
-import tvTopRated from "./components/tvShows/tvTopRated"
+import Home from './components/Home';
+import MostPopularMovies from "./components/movies/MostPopularMovies"
+import NowPlayingMovies from "./components/movies/NowPlayingMovies"
+import TopRatedMovies from "./components/movies/TopRatedMovies"
+import UpcomingMovies from "./components/movies/UpcomingMovies"
+import AiringTodayTv from "./components/tvShows/AiringTodayTv"
+import MostPopularTv from "./components/tvShows/MostPopularTv"
+import OnTv from "./components/tvShows/OnTv"
+import TopRatedTv from "./components/tvShows/TopRatedTv"
 
 
 
 
 export default [
-{ path: '/', component: home},
-{ path: '/movie/popular', component: movieMostPopular},
-{ path: '/movie/now_playing', component: movieNowPlaying},
-{ path: '/movie/upcoming', component: movieUpcoming},
-{ path: '/movie/top_rated', component: movieTopRated},
-{ path: '/tv/popular', component: tvMostPopular},
-{ path: '/tv/airing_today', component: tvAiringToday},
-{ path: '/tv/on_tv', component: tvOnTv},
-{ path: '/tv/top_rated', component: tvTopRated},
+{ path: '/', component: Home},
+{ path: '/movie/popular', component: MostPopularMovies},
+{ path: '/movie/now_playing', component: NowPlayingMovies},
+{ path: '/movie/upcoming', component: UpcomingMovies},
+{ path: '/movie/top_rated', component: TopRatedMovies},
+{ path: '/tv/popular', component: MostPopularTv},
+{ path: '/tv/airing_today', component: AiringTodayTv},
+{ path: '/tv/on_tv', component: OnTv},
+{ path: '/tv/top_rated', component: TopRatedTv},
 ]

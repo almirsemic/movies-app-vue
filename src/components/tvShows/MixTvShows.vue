@@ -1,13 +1,13 @@
 <template>
   <div>
     <div class="wrapper">
-      <div v-for="movie in movies" :key="movie.id" class="old">
+      <div v-for="tv in tvShows" :key="tv.id" class="imagesPosts">
         <img
           :src="
-            'https://themoviedb.org/t/p/w440_and_h660_face' + movie.poster_path
+            'https://themoviedb.org/t/p/w440_and_h660_face' + tv.poster_path
           "
         />
-        <p>{{ movie.title }}</p>
+        <p>{{ tv.name }}</p>
       </div>
     </div>
     <button>Load More</button>
@@ -16,25 +16,26 @@
 
 <script>
 export default {
-    props: {
-moviesEndpoint: {
-    type: String
-}
+  props: {
+    tvShowsEndpoint: {
+      type: String,
     },
+  },
   data() {
     return {
-      movies: [],
+      tvShows: [],
     };
   },
   created() {
+    const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
     fetch(
-      `https://api.themoviedb.org/3/movie/${this.moviesEndpoint}?api_key=ffebf14b46dcd2b2bb0af17fdfffaa0c`
+      `https://api.themoviedb.org/3/tv/${this.tvShowsEndpoint}?api_key=${ApiKey}`
     )
       .then((data) => {
         return data.json();
       })
       .then((data) => {
-        this.movies = data.results;
+        this.tvShows = data.results;
       });
   },
 };
@@ -45,7 +46,6 @@ moviesEndpoint: {
   margin: 100px 50px 0 330px;
   display: table;
   background-color: #f8f0fb;
-
 }
 
 .wrapper img {
@@ -64,7 +64,7 @@ moviesEndpoint: {
   font-size: 16px;
   line-height: 20px;
 }
-.old {
+.imagesPosts {
   background-color: white;
   border-radius: 10px;
   height: 430px;
@@ -74,18 +74,18 @@ moviesEndpoint: {
   float: right;
   margin: 20px 10px;
 }
-.old:hover{ 
+.imagesPosts:hover {
   background-color: #f8f0fb;
   border: 1px solid #f8f0fb;
 }
 
-button{
+button {
   width: 1080px;
   margin: 0 0 7px 360px;
   text-align: center;
   border-radius: 10px;
-  border: 1px solid #01B4E4;
-  background-color: #01B4E4;
+  border: 1px solid #01b4e4;
+  background-color: #01b4e4;
   color: white;
   font-size: 20px;
 }

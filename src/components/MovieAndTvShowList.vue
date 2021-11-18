@@ -12,7 +12,7 @@
       <button @click="showMovies = false" class="tvShows">Tv Shows</button>
     </div>
     <div class="wrapper" v-show="showMovies">
-      <div v-for="movie in movies" :key="movie.id" class="old">
+      <div v-for="movie in movies" :key="movie.id" class="imagesPosts">
         <img
           :src="
             'https://themoviedb.org/t/p/w440_and_h660_face' + movie.poster_path
@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="wrapper" v-show="!showMovies">
-      <div v-for="one in tvShows" :key="one.id" class="old">
+      <div v-for="one in tvShows" :key="one.id" class="imagesPosts">
         <img
           :src="
             'https://themoviedb.org/t/p/w440_and_h660_face' + one.poster_path
@@ -54,12 +54,14 @@ export default {
     return {
       movies: [],
       tvShows: [],
-      showMovies: true,
+      showMovies: true, 
     };
   },
+
   created() {
+      const ApiKey = 'ffebf14b46dcd2b2bb0af17fdfffaa0c';
     fetch(
-      `https://api.themoviedb.org/3/movie/${this.moviesEndpoint}?api_key=ffebf14b46dcd2b2bb0af17fdfffaa0c`
+      `https://api.themoviedb.org/3/movie/${this.moviesEndpoint}?api_key=${ApiKey}`
     )
       .then((data) => {
         return data.json();
@@ -68,7 +70,7 @@ export default {
         this.movies = data.results;
       });
     fetch(
-      `https://api.themoviedb.org/3/tv/${this.tvShowsEndpoint}?api_key=ffebf14b46dcd2b2bb0af17fdfffaa0c`
+      `https://api.themoviedb.org/3/tv/${this.tvShowsEndpoint}?api_key=${ApiKey}`
     )
       .then((data) => {
         return data.json();
@@ -112,7 +114,7 @@ h3 {
   display: inline-block;
   margin: 70px 0 0 0;
 }
-.old {
+.imagesPosts {
   background-color: white;
   border-radius: 10px;
   height: 330px;
@@ -121,14 +123,14 @@ h3 {
   border: 1px solid #ccc;
 }
 
-.old:hover {
+.imagesPosts:hover {
   margin-top: -30px;
   margin-left: 30px;
   margin-right: 30px;
   max-height: 400px;
   width: 170px;
 }
-.old:hover img {
+.imagesPosts:hover img {
   width: 170px;
   height: 255px;
 }

@@ -1,18 +1,15 @@
 <template>
   <div>
-    <navigationBar></navigationBar>
-
+    <Navigation></Navigation>
     <router-view></router-view>
   </div>
 </template>
 <script>
-import navigationBar from "./components/navigationBar.vue";
-
+import Navigation from "./components/Navigation.vue";
 export default {
   components: {
-    navigationBar: navigationBar,
+    Navigation,
   },
 };
 </script>
-<style scoped>
-</style>
+

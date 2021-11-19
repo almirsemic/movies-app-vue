@@ -1,26 +1,26 @@
 <template>
-  <div class="navBar">
+  <div class="Navbar">
     <div class="logo">
       <button>
-        <a href="/"><img src="@/assets/Vector.png" /></a>
+        <router-link to="/"><img src="@/assets/Vector.png" /></router-link>
       </button>
     </div>
     <div class="movies">
       <button>Movies<img src="@/assets/Vector (3).png" /></button>
       <div class="one">
-        <a href="/movie/popular">Most Popular</a>
-        <a href="/movie/now_playing">Now Playing</a>
-        <a href="/movie/upcoming">Upcoming</a>
-        <a href="/movie/top_rated">Top Rated</a>
+        <router-link to="/movie/popular">Popular</router-link>
+        <router-link to="/movie/now_playing">Now Plying</router-link>
+        <router-link to="/movie/upcoming">Upcoming</router-link>
+        <router-link to="/movie/top_rated">Top Rated</router-link>
       </div>
     </div>
     <div class="tvshows">
       <button>Tv Shows<img src="@/assets/Vector (3).png" /></button>
       <div class="two">
-       <a href="/tv/popular">Most Popular</a>
-        <a href="/tv/airing_today">Airing Today</a>
-        <a href="/tv/on_tv">On TV</a>
-        <a href="/tv/top_rated">Top Rated</a>
+        <router-link to="/tv/popular">Most Popular</router-link>
+        <router-link to="/tv/airing_today">Airing Today</router-link>
+        <router-link to="/tv/on_tv">On TV</router-link>
+        <router-link to="/tv/top_rated">Top Rated</router-link>
       </div>
     </div>
     <div class="people">
@@ -45,7 +45,7 @@ export default {};
 </script>
 
 <style scoped>
-.navBar {
+.Navbar {
   background-color: #032541;
   height: 60px;
 }

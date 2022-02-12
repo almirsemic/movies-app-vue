@@ -1,27 +1,27 @@
 <template>
-  <div v-if="movie_details">
+  <div v-if="movieDetails">
     <div
       class="background"
       :style="{
-        backgroundImage: `url('https://themoviedb.org/t/p/original/${movie_details.backdrop_path}')`,
+        backgroundImage: `url('https://themoviedb.org/t/p/original/${movieDetails.backdrop_path}')`,
       }"
     >
       <div class="text_on_picture">
         <h1>
-          {{ movie_details.title }}({{
-            movie_details.release_date.slice(0, 4)
+          {{ movieDetails.title }}({{
+            movieDetails.release_date.slice(0, 4)
           }})
         </h1>
         <a>
-          {{ movie_details.release_date }} ({{
-            movie_details.production_companies[0].origin_country
+          {{ movieDetails.release_date }} ({{
+            movieDetails.production_companies[0].origin_country
           }})</a
         >
-        <p v-for="genre in movie_details.genres" :key="genre.id">{{ genre.name }}</p>
+        <p v-for="genre in movieDetails.genres" :key="genre.id">{{ genre.name }}</p>
         <p>
           {{
-            `${(movie_details.runtime / 60) ^ 0}h:` +
-            (movie_details.runtime % 60)
+            `${(movieDetails.runtime / 60) ^ 0}h:` +
+            (movieDetails.runtime % 60)
           }}min
         </p>
         <div class="actor_and_interest" v-if="actors">
@@ -45,7 +45,7 @@
           </ul>
         </div>
         <div class="percentage">
-          <a>{{ movie_details.vote_average * 10 }}%</a>
+          <a>{{ movieDetails.vote_average * 10 }}%</a>
         </div>
         <div class="user_score">
           <a
@@ -60,7 +60,7 @@
         </div>
         <div class="play_trailer">
           <svg
-            @click="youtube_window = true"
+            @click="youTubeWindow = true"
             xmlns="http://www.w3.org/2000/svg"
             width="16"
             height="16"
@@ -72,10 +72,10 @@
               d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z"
             />
           </svg>
-          <a @click="youtube_window = true">Play Trailer</a>
+          <a @click="youTubeWindow = true">Play Trailer</a>
         </div>
-        <div class="youtube" v-if="youtube_window">
-          <button @click="youtube_window = false">
+        <div class="youtube" v-if="youTubeWindow">
+          <button @click="youTubeWindow = false">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -95,17 +95,17 @@
           <iframe
             width="660"
             height="350"
-            :src="`https://www.youtube.com/embed/${youtube_url}`"
+            :src="`https://www.youtube.com/embed/${youTubeUrl}`"
           ></iframe>
         </div>
         <div class="overview">
           <h5>Overview</h5>
-          <label>{{ movie_details.overview | overview }}</label>
+          <label>{{ movieDetails.overview | overview }}</label>
         </div>
       </div>
       <img
         class="picture"
-        :src="`https://themoviedb.org/t/p/w440_and_h660_face/${movie_details.poster_path}`"
+        :src="`https://themoviedb.org/t/p/w440_and_h660_face/${movieDetails.poster_path}`"
       />
     </div>
     <div class="wrapper" v-if="actors">
@@ -121,7 +121,7 @@
         <label>{{ interest.character }}</label>
       </div>
       
-      <a @click="transitionToFilmActors(movie_details.id)">View More</a>
+      <a @click="transitionToFilmActors(movieDetails.id)">View More</a>
     </div>
     <strong>Full Cast & Crew </strong>
     <hr />
@@ -130,19 +130,19 @@
       <a><img src="@/assets/twitter.png" /></a><br /><br />
       <p>
         Status <br />
-        {{ movie_details.status }}
+        {{ movieDetails.status }}
       </p>
       <p>
         Original Language <br />
-        {{ movie_details.original_language | to-uppercase }}
+        {{ movieDetails.original_language | to-uppercase }}
       </p>
       <p>
         Budget <br />
-        ${{ movie_details.budget }}
+        ${{ movieDetails.budget }}
       </p>
       <p>
         Revenue <br />
-        ${{ movie_details.revenue }}
+        ${{ movieDetails.revenue }}
       </p>
 
       <p>Keywords</p>
@@ -170,17 +170,18 @@
       >
         {{ reviews[0].author[0] }}
       </h5>
-      <div class="autor_review" @click="transitionToReview(reviews[0].id)" v-if="Object.keys(reviews).length != 0">
+      <div class="autor_review"  v-if="Object.keys(reviews).length != 0">
         <a>A review by {{ reviews[0].author }}<br /></a>
         <p class="subtitle">Written by {{ reviews[0].author }} on {{ reviews[0].created_at | date }}</p>
         <p>
           <br />
           {{ reviews[0].content | snippet }}
+          <span @click="transitionToReview(reviews[0].id)">Read More</span>
         </p>
       </div>
     </div>
 
-    <button v-if="Object.keys(reviews).length != 0" type="button" class="btn btn-secondary" @click="transitionToAllReviews(movie_details.id)">
+    <button v-if="Object.keys(reviews).length != 0" type="button" class="btn btn-secondary" @click="transitionToAllReviews(movieDetails.id)">
       Show All Reviews
     </button>
     <hr />
@@ -191,12 +192,12 @@
 export default {
   data() {
     return {
-      movie_details: null,
+      movieDetails: null,
       keywords: {},
       actors: null,
       reviews: {},
-      youtube_window: false,
-      youtube_url: "", 
+      youTubeWindow: false,
+      youTubeUrl: "", 
     }
   },
   methods: {
@@ -221,10 +222,7 @@ export default {
         return data.json();
       })
       .then((data) => {
-        this.movie_details = data;
-        console.log(this.movie_details)
-        console.log(this.movie_details.backdrop_path)
-        console.log(1)
+        this.movieDetails = data;
       });
     fetch(
       `https://api.themoviedb.org/3/movie/${this.$route.params.id}/keywords?api_key=${ApiKey}`
@@ -234,8 +232,6 @@ export default {
       })
       .then((data) => {
         this.keywords = data.keywords;
-        console.log(this.keywords)
-        console.log(2)
       });
     fetch(
       `https://api.themoviedb.org/3/movie/${this.$route.params.id}/credits?api_key=${ApiKey}`
@@ -245,8 +241,6 @@ export default {
       })
       .then((data) => {
         this.actors = data;
-        console.log(this.actors)
-        console.log(3)
       });
     fetch(
       `https://api.themoviedb.org/3/movie/${this.$route.params.id}/reviews?api_key=${ApiKey}`
@@ -256,9 +250,6 @@ export default {
       })
       .then((data) => {
         this.reviews = data.results;
-        console.log(this.reviews)
-        console.log(typeof data.results)
-        console.log(4)
       });
     fetch(
       `https://api.themoviedb.org/3/movie/${this.$route.params.id}/videos?api_key=${ApiKey}`
@@ -267,8 +258,7 @@ export default {
         return data.json();
       })
       .then((data) => {
-        this.youtube_url = data.results[0].key;
-        console.log(5)
+        this.youTubeUrl = data.results[0].key;
       });
   },
   filters: {
@@ -277,7 +267,7 @@ export default {
     },
     snippet(value) {
       return value.length > 900
-        ? value.slice(0, 622) + "..." + "   " + "Read More"
+        ? value.slice(0, 622) + "..." + "   "
         : value;
     },
     overview(value) {
@@ -300,6 +290,9 @@ export default {
 </script>
 
 <style scoped>
+span:hover {
+  color: silver;
+}
 .noPicture{
   border-radius: 50%;
   background-color: green;

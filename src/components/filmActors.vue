@@ -1,13 +1,13 @@
 <template>
-  <div>
+  <div v-if="movieDetails">
     <div class="tape">
       <img
-        :src="`https://themoviedb.org/t/p/w440_and_h660_face/${this.movie_details.poster_path}`"
+        :src="`https://themoviedb.org/t/p/w440_and_h660_face/${this.movieDetails.poster_path}`"
       />
       <h4>
-        {{ movie_details.title }}({{ movie_details.release_date.slice(0, 4) }})
+        {{ movieDetails.title }}({{ movieDetails.release_date.slice(0, 4) }})
       </h4>
-      <router-link :to="'/movie/' + movie_details.id"
+      <router-link :to="'/movie/' + movieDetails.id"
         ><button type="button" class="btn btn-secondary">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +79,7 @@
 export default {
   data() {
     return {
-      movie_details: [],
+      movieDetails: null,
       actors: [],
     };
   },
@@ -94,7 +94,6 @@ export default {
       })
       .then((data) => {
         this.actors = data;
-        console.log(data)
         return data;
       })
       .then((data) => {
@@ -103,7 +102,7 @@ export default {
             return data.json();
           })
           .then((data) => {
-            this.movie_details = data;
+            this.movieDetails = data;
           });
       });
   },

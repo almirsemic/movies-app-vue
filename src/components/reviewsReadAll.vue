@@ -1,13 +1,13 @@
 <template>
-  <div>
+  <div v-if="MovieDetails">
     <div class="wrapper">
       <img
-        :src="`https://themoviedb.org/t/p/w440_and_h660_face/${this.movie_details.poster_path}`"
+        :src="`https://themoviedb.org/t/p/w440_and_h660_face/${this.MovieDetails.poster_path}`"
       />
       <h4>
-        {{ movie_details.title }}({{ movie_details.release_date.slice(0, 4) }})
+        {{ MovieDetails.title }}({{ MovieDetails.release_date.slice(0, 4) }})
       </h4>
-      <router-link :to="'/movie/' + movie_details.id"
+      <router-link :to="'/movie/' + MovieDetails.id"
         ><button type="button" class="btn btn-secondary">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -30,7 +30,7 @@
       class="review"
       v-for="review in reviews"
       :key="review.id"
-      @click="transitionToReview(review.id)"
+      
     >
       <img
         v-if="
@@ -58,7 +58,7 @@
         </p>
         <p>
           {{ review.content | snippet }}
-          <span>Read moreaaaaaa</span>
+          <span @click="transitionToReview(review.id)">Read more</span>
         </p>
       </div>
     </div>
@@ -69,7 +69,7 @@ export default {
   data() {
     return {
       reviews: [],
-      movie_details: [],
+      MovieDetails: null,
     };
   },
   methods: {
@@ -95,7 +95,7 @@ export default {
             return data.json();
           })
           .then((data) => {
-            this.movie_details = data;
+            this.MovieDetails = data;
           });
       });
   },
@@ -103,7 +103,7 @@ export default {
   filters: {
     snippet(value) {
       return value.length > 900
-        ? value.slice(0, 622) + "...." + "   " + "Read More"
+        ? value.slice(0, 622) + "...." + "   "
         : value;
     },
     date(value) {
@@ -116,6 +116,9 @@ export default {
 </script>
 
 <style scoped>
+span:hover {
+  color: silver;
+}
 .subtitle {
   font-size: 0.9em;
   font-weight: 300;

@@ -8,9 +8,9 @@ import MostPopularTv from "./components/tvShows/MostPopularTv"
 import OnTv from "./components/tvShows/OnTv"
 import TopRatedTv from "./components/tvShows/TopRatedTv"
 import MovieDetails from "./components/MovieDetails.vue"
-import reviewsReadMore from "./components/reviewsReadMore.vue"
-import reviewsReadAll from "./components/reviewsReadAll.vue"
-import filmActors from "./components/filmActors.vue"
+import ReviewsReadMore from "./components/ReviewsReadMore.vue"
+import ReviewsReadAll from "./components/ReviewsReadAll.vue"
+import FilmActors from "./components/FilmActors.vue"
 
 
 
@@ -25,7 +25,7 @@ export default [
 { path: '/tv/on_tv', component: OnTv},
 { path: '/tv/top_rated', component: TopRatedTv},
 { path: '/movie/:id', name: 'movieDetails', component: MovieDetails},
-{path: '/review/:id', name: 'reviewsReadMore', component: reviewsReadMore}, 
-{path: '/movie/:id/reviews', name: 'reviewsReadAll', component: reviewsReadAll }, 
-{ path: '/movie/:id/cast', name: 'filmActors', component: filmActors}, 
+{path: '/review/:id', name: 'reviewsReadMore', component: ReviewsReadMore}, 
+{path: '/movie/:id/reviews', name: 'reviewsReadAll', component: ReviewsReadAll }, 
+{ path: '/movie/:id/cast', name: 'filmActors', component: FilmActors}, 
 ]

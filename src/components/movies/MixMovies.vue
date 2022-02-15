@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="wrapper">
-      <div v-for="movie in movies" :key="movie.id" class="imagesPosts">
+      <div v-for="movie in movies" :key="movie.id" class="imagesPosts" @click="movieClick(movie.id)">
         <img
           :src="
             'https://themoviedb.org/t/p/w440_and_h660_face' + movie.poster_path
@@ -25,6 +25,11 @@ moviesEndpoint: {
     return {
       movies: [],
     };
+  },
+  methods: {
+    movieClick(movieId){
+      this.$router.push({ name: 'movieDetails', params: { id: movieId } })
+    }
   },
   created() {
       const ApiKey = 'ffebf14b46dcd2b2bb0af17fdfffaa0c';

@@ -12,7 +12,7 @@
       <button @click="showMovies = false" class="tvShows">Tv Shows</button>
     </div>
     <div class="wrapper" v-show="showMovies">
-      <div v-for="movie in movies" :key="movie.id" class="imagesPosts">
+      <div v-for="movie in movies" :key="movie.id" class="imagesPosts" @click="movieClick(movie.id)">
         <img
           :src="
             'https://themoviedb.org/t/p/w440_and_h660_face' + movie.poster_path
@@ -57,7 +57,11 @@ export default {
       showMovies: true, 
     };
   },
-
+ methods: {
+    movieClick(movieId){
+      this.$router.push({ name: 'movieDetails', params: { id: movieId } })
+    }
+  },
   created() {
       const ApiKey = 'ffebf14b46dcd2b2bb0af17fdfffaa0c';
     fetch(
@@ -68,6 +72,7 @@ export default {
       })
       .then((data) => {
         this.movies = data.results;
+        
       });
     fetch(
       `https://api.themoviedb.org/3/tv/${this.tvShowsEndpoint}?api_key=${ApiKey}`

@@ -11,6 +11,9 @@ import MovieDetails from "./components/MovieDetails.vue"
 import ReviewsReadMore from "./components/ReviewsReadMore.vue"
 import ReviewsReadAll from "./components/ReviewsReadAll.vue"
 import FilmActors from "./components/FilmActors.vue"
+import TvShowDetails from "./components/TvShowDetails.vue"
+import Seasons from "./components/movieAndTvShowDetails/Seasons"
+import Episodes from "./components/movieAndTvShowDetails/Episodes"
 
 
 
@@ -26,6 +29,10 @@ export default [
 { path: '/tv/top_rated', component: TopRatedTv},
 { path: '/movie/:id', name: 'movieDetails', component: MovieDetails},
 {path: '/review/:id', name: 'reviewsReadMore', component: ReviewsReadMore}, 
-{path: '/movie/:id/reviews', name: 'reviewsReadAll', component: ReviewsReadAll }, 
-{ path: '/movie/:id/cast', name: 'filmActors', component: FilmActors}, 
+{path: '/:type/:id/reviews', name: 'reviewsReadAll', component: ReviewsReadAll }, 
+{ path: '/:type/:id/cast', name: 'filmActors', component: FilmActors}, 
+{path: '/tv/:id', name: 'tvShowDetails', component: TvShowDetails},
+{path: '/tv/:id/sesons', name: 'seasons', component: Seasons},
+{path: '/tv/:id/sesons/:number', name: 'episodes', component: Episodes},
+
 ]

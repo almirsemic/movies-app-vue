@@ -4,10 +4,11 @@
       <img
         :src="`https://themoviedb.org/t/p/w440_and_h660_face/${this.movieDetails.poster_path}`"
       />
-      <h4>
-        {{ movieDetails.title }}({{ movieDetails.release_date.slice(0, 4) }})
-      </h4>
-      <router-link :to="'/movie/' + movieDetails.id"
+     <h4 v-if="movieDetails.title">
+        {{ movieDetails.title }}({{ movieDetails.release_date.slice(0, 4)  }})
+      </h4>  
+      <h4 v-if="movieDetails.name">{{ movieDetails.name }}({{ movieDetails.first_air_date.slice(0, 4)}})</h4>
+      <router-link :to="`/${this.$route.params.type}/` + movieDetails.id"
         ><button type="button" class="btn btn-secondary">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -87,7 +88,7 @@ export default {
     const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
 
     fetch(
-      `https://api.themoviedb.org/3/movie/${this.$route.params.id}/credits?api_key=${ApiKey}`
+      `https://api.themoviedb.org/3/${this.$route.params.type}/${this.$route.params.id}/credits?api_key=${ApiKey}`
     )
       .then((data) => {
         return data.json();
@@ -97,7 +98,7 @@ export default {
         return data;
       })
       .then((data) => {
-        fetch(`https://api.themoviedb.org/3/movie/${data.id}?api_key=${ApiKey}`)
+        fetch(`https://api.themoviedb.org/3/${this.$route.params.type}/${data.id}?api_key=${ApiKey}`)
           .then((data) => {
             return data.json();
           })

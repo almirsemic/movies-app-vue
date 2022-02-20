@@ -4,10 +4,13 @@
       <img
         :src="`https://themoviedb.org/t/p/w440_and_h660_face/${this.MovieDetails.poster_path}`"
       />
-      <h4>
+      <h4 v-if="MovieDetails.title">
         {{ MovieDetails.title }}({{ MovieDetails.release_date.slice(0, 4) }})
       </h4>
-      <router-link :to="'/movie/' + MovieDetails.id"
+      <h4 v-if="MovieDetails.name">
+        {{ MovieDetails.name }}({{ MovieDetails.first_air_date.slice(0, 4) }})
+      </h4>
+      <router-link :to="`/${this.$route.params.type}/` + MovieDetails.id"
         ><button type="button" class="btn btn-secondary">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -74,13 +77,13 @@ export default {
   },
   methods: {
     transitionToReview(id) {
-      this.$router.push({ name: "reviewsReadMore", params: { id } });
+      this.$router.push({ name: "reviewsReadMore", params: { id, type: this.$route.params.type } });
     },
   },
   created() {
     const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
     fetch(
-      `https://api.themoviedb.org/3/movie/${this.$route.params.id}/reviews?api_key=${ApiKey}`
+      `https://api.themoviedb.org/3/${this.$route.params.type}/${this.$route.params.id}/reviews?api_key=${ApiKey}`
     )
       .then((data) => {
         return data.json();
@@ -90,7 +93,7 @@ export default {
         return data;
       })
       .then((data) => {
-        fetch(`https://api.themoviedb.org/3/movie/${data.id}?api_key=${ApiKey}`)
+        fetch(`https://api.themoviedb.org/3/${this.$route.params.type}/${data.id}?api_key=${ApiKey}`)
           .then((data) => {
             return data.json();
           })

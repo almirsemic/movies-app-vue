@@ -22,7 +22,7 @@
       </div>
     </div>
     <div class="wrapper" v-show="!showMovies">
-      <div v-for="one in tvShows" :key="one.id" class="imagesPosts" @click="movieClickToTv(one.id)">
+      <div v-for="one in tvShows" :key="one.id" class="imagesPosts" @click="tvShowClick(one.id)">
         <img
           :src="
             'https://themoviedb.org/t/p/w440_and_h660_face' + one.poster_path
@@ -61,7 +61,7 @@ export default {
     movieClick(movieId){
       this.$router.push({ name: 'movieDetails', params: { id: movieId } })
     },
-    movieClickToTv(tvId){
+    tvShowClick(tvId){
       this.$router.push({ name: 'tvShowDetails', params: { id: tvId } })
     }
   },

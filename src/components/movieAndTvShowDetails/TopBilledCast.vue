@@ -1,9 +1,9 @@
 <template>
   <div>
-       <div class="wrapper" v-if="actors">
+       <div class="wrapper" v-if="actors" >
       <h4>Top Billed Cast</h4>
       
-        <div class="actors_and_pictures"  v-for="interest in actors.cast.slice(0, 8)" :key="interest.id">
+        <div class="actors_and_pictures"  v-for="interest in actors.cast.slice(0, 8)" :key="interest.id" @click="transitionToActorDetails(interest.id)">
         <img v-if="interest.profile_path != null"
           :src="
             'https://themoviedb.org/t/p/w440_and_h660_face' + interest.profile_path
@@ -24,7 +24,7 @@
 <script>
 export default {
            props: {
-moviesOrTvEndpoint: {
+endpointType: {
     type: String
 }
     },
@@ -35,14 +35,18 @@ actors: null
 },
 methods: {
     transitionToFilmActors(id){
-     this.$router.push({ name: 'filmActors', params: { id, type: this.moviesOrTvEndpoint } })
+     this.$router.push({ name: 'filmActors', params: { id, type: this.endpointType } })
+   },
+   transitionToActorDetails(id){
+     this.$router.push({ name: 'actorDetails', params: { id } })
+
    }
 },
 created() {
     const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
 
     fetch(
-      `https://api.themoviedb.org/3/${this.moviesOrTvEndpoint}/${this.$route.params.id}/credits?api_key=${ApiKey}`
+      `https://api.themoviedb.org/3/${this.endpointType}/${this.$route.params.id}/credits?api_key=${ApiKey}`
     )
       .then((data) => {
         return data.json();

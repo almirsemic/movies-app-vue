@@ -96,12 +96,12 @@
               )"
               :key="a.credit_id"
             >
-              <img
+              <img @click="transitionToActorDetails(a.id)"
                 v-if="a.profile_path"
                 :src="'https://themoviedb.org/t/p/original/' + a.profile_path"
               />
-              <img src="@/assets/image.png" v-if="a.profile_path == null" />
-              <bdi 
+              <img @click="transitionToActorDetails(a.id)" src="@/assets/image.png" v-if="a.profile_path == null" />
+              <bdi @click="transitionToActorDetails(a.id)"
                 >{{ a.name }} <br /><i>{{ a.character }}</i></bdi
               >
             </div>
@@ -115,12 +115,12 @@
               )"
               :key="a.credit_id"
             >
-              <img
+              <img @click="transitionToActorDetails(a.id)"
                 v-if="a.profile_path"
                 :src="'https://themoviedb.org/t/p/original/' + a.profile_path"
               />
-              <img src="@/assets/image.png" v-if="a.profile_path == null" />
-              <bdi
+              <img @click="transitionToActorDetails(a.id)" src="@/assets/image.png" v-if="a.profile_path == null" />
+              <bdi @click="transitionToActorDetails(a.id)"
                 >{{ a.name }} <br /><i>{{ a.character }}</i></bdi
               >
             </div>
@@ -155,6 +155,11 @@ export default {
       OpenMore: null,
       SeriesNumber: null
     };
+  },
+  methods: {
+transitionToActorDetails(id){
+      this.$router.push({ name: 'actorDetails', params: { id } })
+}
   },
   created() {
     const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
@@ -266,8 +271,8 @@ strong {
   width: 1320px;
   min-height: 164px;
   border-radius: 5px;
-  border: 1px solid silver;
   margin: 20px 0 45px 100px;
+  border: 1px solid silver;
   box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
 }
 .episode img {

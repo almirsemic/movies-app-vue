@@ -35,15 +35,15 @@
             <p>Coast({{ actors.cast.length }})</p>
           </div>
           <div class="widow" v-for="actor in actors.cast" :key="actor.id">
-            <img v-if="actor.profile_path != null"
+            <img v-if="actor.profile_path != null"  @click="transitionToActorDetails(actor.id)"
               :src="
                 'https://themoviedb.org/t/p/w440_and_h660_face' +
                 actor.profile_path
               "
             />
-            <img v-if="actor.profile_path == null" src="@/assets/image.png" >
+            <img v-if="actor.profile_path == null" src="@/assets/image.png"  @click="transitionToActorDetails(actor.id)">
             <div class="caracter">
-              <p>
+              <p  @click="transitionToActorDetails(actor.id)">
                 {{ actor.name }}
               </p>
               <label>{{ actor.character }}</label>
@@ -60,11 +60,11 @@
               :src="
                 'https://themoviedb.org/t/p/w440_and_h660_face' +
                 actor.profile_path
-              "
+              "  @click="transitionToActorDetails(actor.id)"
             />
-            <img v-if="actor.profile_path == null" src="@/assets/image.png" >
+            <img v-if="actor.profile_path == null" src="@/assets/image.png"  @click="transitionToActorDetails(actor.id)">
             <div class="caracter">
-              <p>
+              <p  @click="transitionToActorDetails(actor.id)">
                 {{ actor.name }}
               </p>
               <label>{{ actor.job }}</label>
@@ -84,6 +84,12 @@ export default {
       actors: [],
     };
   },
+  methods: {
+  transitionToActorDetails(id){
+     this.$router.push({ name: 'actorDetails', params: { id } })
+
+   }
+},
   created() {
     const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
 

@@ -1,34 +1,48 @@
 <template>
   <div v-if="movieAndTvDetails && actors">
-      <div
+    <div
       class="background"
       :style="{
         backgroundImage: `url('https://themoviedb.org/t/p/original/${movieAndTvDetails.backdrop_path}')`,
       }"
     >
       <div class="text_on_picture">
-          <slot name="title"></slot>
-          <slot name="title_one"></slot>
-          <slot name="title_two"></slot>
-        <p v-for="genre in movieAndTvDetails.genres" :key="genre.id">{{ genre.name }}</p>
-          <slot name="runtime"></slot>
+        <slot name="title"></slot>
+        <slot name="title_one"></slot>
+        <slot name="title_two"></slot>
+        <p v-for="genre in movieAndTvDetails.genres" :key="genre.id">
+          {{ genre.name }}
+        </p>
+        <slot name="runtime"></slot>
         <div class="actor_and_interest" v-if="actors">
           <ul>
-            <li v-for="actor in actors.crew.slice(0, 3)" :key="actor.credit_id">
-              {{ actor .name | to-uppercase }} <br />
-              {{ actor .job }}
+            <li
+              v-for="actor in actors.crew.slice(0, 3)"
+              :key="actor.credit_id"
+              @click="transitionToActorDetails(actor.id)"
+            >
+              {{ actor.name | to-uppercase }} <br />
+              {{ actor.job }}
             </li>
           </ul>
           <ul>
-            <li v-for="actor  in actors.crew.slice(3, 5)" :key="actor.credit_id">
-              {{ actor .name | to-uppercase }} <br />
-              {{ actor .job }}
+            <li
+              v-for="actor in actors.crew.slice(3, 5)"
+              :key="actor.credit_id"
+              @click="transitionToActorDetails(actor.id)"
+            >
+              {{ actor.name | to-uppercase }} <br />
+              {{ actor.job }}
             </li>
           </ul>
           <ul>
-            <li v-for="actor  in actors.crew.slice(5, 7)" :key="actor.credit_id">
-              {{ actor .name | to-uppercase }} <br />
-              {{ actor .job }}
+            <li
+              v-for="actor in actors.crew.slice(5, 7)"
+              :key="actor.credit_id"
+              @click="transitionToActorDetails(actor.id)"
+            >
+              {{ actor.name | to-uppercase }} <br />
+              {{ actor.job }}
             </li>
           </ul>
         </div>
@@ -101,24 +115,29 @@
 
 <script>
 export default {
-       props: {
-moviesOrTvEndpoint: {
-    type: String
-}
+  props: {
+    endpointType: {
+      type: String,
     },
-data(){
+  },
+  data() {
     return {
-movieAndTvDetails: null,
-actors: null,
-youTubeWindow: false,
-youTubeURL: "",
-    }
-},
- created() {
+      movieAndTvDetails: null,
+      actors: null,
+      youTubeWindow: false,
+      youTubeURL: "",
+    };
+  },
+  methods: {
+    transitionToActorDetails(id) {
+      this.$router.push({ name: "actorDetails", params: { id } });
+    },
+  },
+  created() {
     const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
 
     fetch(
-      `https://api.themoviedb.org/3/${this.moviesOrTvEndpoint}/${this.$route.params.id}?api_key=${ApiKey}`
+      `https://api.themoviedb.org/3/${this.endpointType}/${this.$route.params.id}?api_key=${ApiKey}`
     )
       .then((data) => {
         return data.json();
@@ -126,8 +145,8 @@ youTubeURL: "",
       .then((data) => {
         this.movieAndTvDetails = data;
       });
-       fetch(
-      `https://api.themoviedb.org/3/${this.moviesOrTvEndpoint}/${this.$route.params.id}/credits?api_key=${ApiKey}`
+    fetch(
+      `https://api.themoviedb.org/3/${this.endpointType}/${this.$route.params.id}/credits?api_key=${ApiKey}`
     )
       .then((data) => {
         return data.json();
@@ -135,22 +154,21 @@ youTubeURL: "",
       .then((data) => {
         this.actors = data;
       });
-      fetch(
-      `https://api.themoviedb.org/3/${this.moviesOrTvEndpoint}/${this.$route.params.id}/videos?api_key=${ApiKey}`
+    fetch(
+      `https://api.themoviedb.org/3/${this.endpointType}/${this.$route.params.id}/videos?api_key=${ApiKey}`
     )
       .then((data) => {
         return data.json();
       })
       .then((data) => {
-        if(data.results.length > 0){
-         this.youTubeURL = data.results[0].key;
-        }else{
-           this.youTubeURL = '' 
+        if (data.results.length > 0) {
+          this.youTubeURL = data.results[0].key;
+        } else {
+          this.youTubeURL = "";
         }
-      
       });
-},
- filters: {
+  },
+  filters: {
     "to-uppercase"(value) {
       return value.toUpperCase();
     },
@@ -161,8 +179,8 @@ youTubeURL: "",
         return value;
       }
     },
- }
-}
+  },
+};
 </script>
 
 <style scoped>

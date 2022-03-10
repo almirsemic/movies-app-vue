@@ -12,7 +12,12 @@
       <button @click="showMovies = false" class="tvShows">Tv Shows</button>
     </div>
     <div class="wrapper" v-show="showMovies">
-      <div v-for="movie in movies" :key="movie.id" class="imagesPosts" @click="movieClick(movie.id)">
+      <div
+        v-for="movie in movies"
+        :key="movie.id"
+        class="imagesPosts"
+        @click="movieClick(movie.id)"
+      >
         <img
           :src="
             'https://themoviedb.org/t/p/w440_and_h660_face' + movie.poster_path
@@ -22,7 +27,12 @@
       </div>
     </div>
     <div class="wrapper" v-show="!showMovies">
-      <div v-for="one in tvShows" :key="one.id" class="imagesPosts" @click="tvShowClick(one.id)">
+      <div
+        v-for="one in tvShows"
+        :key="one.id"
+        class="imagesPosts"
+        @click="tvShowClick(one.id)"
+      >
         <img
           :src="
             'https://themoviedb.org/t/p/w440_and_h660_face' + one.poster_path
@@ -32,11 +42,11 @@
       </div>
     </div>
     <hr />
-    
   </div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
   props: {
     moviesEndpoint: {
@@ -48,45 +58,33 @@ export default {
     title: {
       type: String,
     },
-   
   },
   data() {
     return {
       movies: [],
       tvShows: [],
-      showMovies: true, 
+      showMovies: true,
     };
   },
- methods: {
-    movieClick(movieId){
-      this.$router.push({ name: 'movieDetails', params: { id: movieId } })
+  methods: {
+    movieClick(movieId) {
+      this.$router.push({ name: "movieDetails", params: { id: movieId } });
     },
-    tvShowClick(tvId){
-      this.$router.push({ name: 'tvShowDetails', params: { id: tvId } })
-    }
+    tvShowClick(tvId) {
+      this.$router.push({ name: "tvShowDetails", params: { id: tvId } });
+    },
   },
-  created() {
-      const ApiKey = 'ffebf14b46dcd2b2bb0af17fdfffaa0c';
-    fetch(
-      `https://api.themoviedb.org/3/movie/${this.moviesEndpoint}?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        this.movies = data.results;
-        
-      });
-    fetch(
-      `https://api.themoviedb.org/3/tv/${this.tvShowsEndpoint}?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        this.tvShows = data.results;
-      })
-      
+  async created() {
+    const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
+
+    const allMovies = await axios.get(
+      `movie/${this.moviesEndpoint}?api_key=${ApiKey}`
+    );
+    this.movies = allMovies.data.results;
+    const allTvShows = await axios.get(
+      `tv/${this.tvShowsEndpoint}?api_key=${ApiKey}`
+    );
+    this.tvShows = allTvShows.data.results;
   },
 };
 </script>

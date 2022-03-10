@@ -4,10 +4,12 @@
       <img
         :src="`https://themoviedb.org/t/p/w440_and_h660_face/${this.movieDetails.poster_path}`"
       />
-     <h4 v-if="movieDetails.title">
-        {{ movieDetails.title }}({{ movieDetails.release_date.slice(0, 4)  }})
-      </h4>  
-      <h4 v-if="movieDetails.name">{{ movieDetails.name }}({{ movieDetails.first_air_date.slice(0, 4)}})</h4>
+      <h4 v-if="movieDetails.title">
+        {{ movieDetails.title }}({{ movieDetails.release_date.slice(0, 4) }})
+      </h4>
+      <h4 v-if="movieDetails.name">
+        {{ movieDetails.name }}({{ movieDetails.first_air_date.slice(0, 4) }})
+      </h4>
       <router-link :to="`/${this.$route.params.type}/` + movieDetails.id"
         ><button type="button" class="btn btn-secondary">
           <svg
@@ -35,15 +37,21 @@
             <p>Coast({{ actors.cast.length }})</p>
           </div>
           <div class="widow" v-for="actor in actors.cast" :key="actor.id">
-            <img v-if="actor.profile_path != null"  @click="transitionToActorDetails(actor.id)"
+            <img
+              v-if="actor.profile_path != null"
+              @click="transitionToActorDetails(actor.id)"
               :src="
                 'https://themoviedb.org/t/p/w440_and_h660_face' +
                 actor.profile_path
               "
             />
-            <img v-if="actor.profile_path == null" src="@/assets/image.png"  @click="transitionToActorDetails(actor.id)">
+            <img
+              v-if="actor.profile_path == null"
+              src="@/assets/image.png"
+              @click="transitionToActorDetails(actor.id)"
+            />
             <div class="caracter">
-              <p  @click="transitionToActorDetails(actor.id)">
+              <p @click="transitionToActorDetails(actor.id)">
                 {{ actor.name }}
               </p>
               <label>{{ actor.character }}</label>
@@ -54,17 +62,26 @@
           <div class="coast_and_crew">
             <p>Crew({{ actors.crew.length }})</p>
           </div>
-          <div class="widow" v-for="actor in actors.crew" :key="actor.credit_id">
-            <img v-if="
-                actor.profile_path != null"
+          <div
+            class="widow"
+            v-for="actor in actors.crew"
+            :key="actor.credit_id"
+          >
+            <img
+              v-if="actor.profile_path != null"
               :src="
                 'https://themoviedb.org/t/p/w440_and_h660_face' +
                 actor.profile_path
-              "  @click="transitionToActorDetails(actor.id)"
+              "
+              @click="transitionToActorDetails(actor.id)"
             />
-            <img v-if="actor.profile_path == null" src="@/assets/image.png"  @click="transitionToActorDetails(actor.id)">
+            <img
+              v-if="actor.profile_path == null"
+              src="@/assets/image.png"
+              @click="transitionToActorDetails(actor.id)"
+            />
             <div class="caracter">
-              <p  @click="transitionToActorDetails(actor.id)">
+              <p @click="transitionToActorDetails(actor.id)">
                 {{ actor.name }}
               </p>
               <label>{{ actor.job }}</label>
@@ -75,8 +92,8 @@
     </div>
   </div>
 </template>
-
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -85,33 +102,21 @@ export default {
     };
   },
   methods: {
-  transitionToActorDetails(id){
-     this.$router.push({ name: 'actorDetails', params: { id } })
-
-   }
-},
-  created() {
+    transitionToActorDetails(id) {
+      this.$router.push({ name: "actorDetails", params: { id } });
+    },
+  },
+  async created() {
     const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
 
-    fetch(
-      `https://api.themoviedb.org/3/${this.$route.params.type}/${this.$route.params.id}/credits?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        this.actors = data;
-        return data;
-      })
-      .then((data) => {
-        fetch(`https://api.themoviedb.org/3/${this.$route.params.type}/${data.id}?api_key=${ApiKey}`)
-          .then((data) => {
-            return data.json();
-          })
-          .then((data) => {
-            this.movieDetails = data;
-          });
-      });
+    const allActors = await axios.get(
+      `${this.$route.params.type}/${this.$route.params.id}/credits?api_key=${ApiKey}`
+    );
+    this.actors = allActors.data;
+    const details = await axios.get(
+      `${this.$route.params.type}/${allActors.data.id}?api_key=${ApiKey}`
+    );
+    this.movieDetails = details.data;
   },
 };
 </script>

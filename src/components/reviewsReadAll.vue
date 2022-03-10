@@ -29,12 +29,7 @@
         </button></router-link
       >
     </div>
-    <div
-      class="review"
-      v-for="review in reviews"
-      :key="review.id"
-      
-    >
+    <div class="review" v-for="review in reviews" :key="review.id">
       <img
         v-if="
           review.author_details.avatar_path &&
@@ -68,6 +63,7 @@
   </div>
 </template>
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -77,37 +73,28 @@ export default {
   },
   methods: {
     transitionToReview(id) {
-      this.$router.push({ name: "reviewsReadMore", params: { id, type: this.$route.params.type } });
+      this.$router.push({
+        name: "reviewsReadMore",
+        params: { id, type: this.$route.params.type },
+      });
     },
   },
-  created() {
+  async created() {
     const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
-    fetch(
-      `https://api.themoviedb.org/3/${this.$route.params.type}/${this.$route.params.id}/reviews?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        this.reviews = data.results;
-        return data;
-      })
-      .then((data) => {
-        fetch(`https://api.themoviedb.org/3/${this.$route.params.type}/${data.id}?api_key=${ApiKey}`)
-          .then((data) => {
-            return data.json();
-          })
-          .then((data) => {
-            this.MovieDetails = data;
-          });
-      });
+
+    const allReviews = await axios.get(
+      `${this.$route.params.type}/${this.$route.params.id}/reviews?api_key=${ApiKey}`
+    );
+    this.reviews = allReviews.data.results;
+    const details = await axios.get(
+      `${this.$route.params.type}/${allReviews.data.id}?api_key=${ApiKey}`
+    );
+    this.MovieDetails = details.data;
   },
 
   filters: {
     snippet(value) {
-      return value.length > 900
-        ? value.slice(0, 622) + "...." + "   "
-        : value;
+      return value.length > 900 ? value.slice(0, 622) + "...." + "   " : value;
     },
     date(value) {
       if (value) {

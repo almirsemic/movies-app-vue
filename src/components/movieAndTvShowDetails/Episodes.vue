@@ -2,16 +2,32 @@
   <div>
     <div class="wrapper">
       <img
-        v-if="EpisodesDetails && EpisodesDetails.seasons[SeriesNumber].poster_path"
+        v-if="
+          EpisodesDetails && EpisodesDetails.seasons[SeriesNumber].poster_path
+        "
         :src="`https://themoviedb.org/t/p/w440_and_h660_face/${this.EpisodesDetails.seasons[SeriesNumber].poster_path}`"
       />
-      <img v-if="EpisodesDetails && !EpisodesDetails.seasons[SeriesNumber].poster_path" src="@/assets/nophoto.jpg">
+      <img
+        v-if="
+          EpisodesDetails && !EpisodesDetails.seasons[SeriesNumber].poster_path
+        "
+        src="@/assets/nophoto.jpg"
+      />
       <h4 v-if="EpisodesDetails && EpisodesDetails.seasons[SeriesNumber].name">
         {{ EpisodesDetails.seasons[SeriesNumber].name }}
-      </h4><h3 v-if="EpisodesDetails && EpisodesDetails.seasons[SeriesNumber].air_date">({{
-          EpisodesDetails.seasons[SeriesNumber].air_date.slice(0, 4)
-        }})</h3>
-        <h3 v-if="EpisodesDetails && !EpisodesDetails.seasons[SeriesNumber].air_date">({{ EpisodesDetails.first_air_date.slice(0, 4) }})</h3>
+      </h4>
+      <h3
+        v-if="EpisodesDetails && EpisodesDetails.seasons[SeriesNumber].air_date"
+      >
+        ({{ EpisodesDetails.seasons[SeriesNumber].air_date.slice(0, 4) }})
+      </h3>
+      <h3
+        v-if="
+          EpisodesDetails && !EpisodesDetails.seasons[SeriesNumber].air_date
+        "
+      >
+        ({{ EpisodesDetails.first_air_date.slice(0, 4) }})
+      </h3>
       <router-link v-if="EpisodesDetails" :to="'/tv/' + EpisodesDetails.id"
         ><button type="button" class="btn btn-secondary">
           <svg
@@ -36,10 +52,11 @@
       <hr />
       <h5 v-if="Episodes">Episodes {{ Episodes.length }}</h5>
       <div class="episode" v-for="episode in Episodes" :key="episode.id">
-        <img v-if="episode.still_path"
+        <img
+          v-if="episode.still_path"
           :src="'https://themoviedb.org/t/p/original/' + episode.still_path"
         />
-        <img v-if="!episode.still_path" src="@/assets/nophoto.jpg">
+        <img v-if="!episode.still_path" src="@/assets/nophoto.jpg" />
         <hr />
         <strong>{{ episode.episode_number }} {{ episode.name }}</strong>
         <p class="detailss">{{ episode.air_date }}</p>
@@ -68,23 +85,40 @@
                 No guest stars have been added.
               </p>
 
-
-
-               <p v-if="episode && episode.crew.length > 0 && episode.crew[0].job == 'Director'">
+              <p
+                v-if="
+                  episode &&
+                  episode.crew.length > 0 &&
+                  episode.crew[0].job == 'Director'
+                "
+              >
                 Directed by: <small>{{ episode.crew[0].name }}</small>
               </p>
-              <p v-if="episode && episode.crew.length > 0 && episode.crew[0].known_for_department == 'Writing'">
+              <p
+                v-if="
+                  episode &&
+                  episode.crew.length > 0 &&
+                  episode.crew[0].known_for_department == 'Writing'
+                "
+              >
                 Written by: <small>{{ episode.crew[0].original_name }}</small>
               </p>
-              <p v-if="episode && episode.crew.length == 0 || episode.crew[0].job != 'Director'">
+              <p
+                v-if="
+                  (episode && episode.crew.length == 0) ||
+                  episode.crew[0].job != 'Director'
+                "
+              >
                 Direction by: <small>No director has been added.</small>
               </p>
-              <p v-if="episode && episode.crew.length == 0 || episode.crew[0].known_for_department != 'Writing'">
+              <p
+                v-if="
+                  (episode && episode.crew.length == 0) ||
+                  episode.crew[0].known_for_department != 'Writing'
+                "
+              >
                 Written by: <small>No writer has been added.</small>
               </p>
-
-
-
             </div>
           </div>
           <div class="col-md-5">
@@ -96,11 +130,16 @@
               )"
               :key="a.credit_id"
             >
-              <img @click="transitionToActorDetails(a.id)"
+              <img
+                @click="transitionToActorDetails(a.id)"
                 v-if="a.profile_path"
                 :src="'https://themoviedb.org/t/p/original/' + a.profile_path"
               />
-              <img @click="transitionToActorDetails(a.id)" src="@/assets/image.png" v-if="a.profile_path == null" />
+              <img
+                @click="transitionToActorDetails(a.id)"
+                src="@/assets/image.png"
+                v-if="a.profile_path == null"
+              />
               <bdi @click="transitionToActorDetails(a.id)"
                 >{{ a.name }} <br /><i>{{ a.character }}</i></bdi
               >
@@ -115,11 +154,16 @@
               )"
               :key="a.credit_id"
             >
-              <img @click="transitionToActorDetails(a.id)"
+              <img
+                @click="transitionToActorDetails(a.id)"
                 v-if="a.profile_path"
                 :src="'https://themoviedb.org/t/p/original/' + a.profile_path"
               />
-              <img @click="transitionToActorDetails(a.id)" src="@/assets/image.png" v-if="a.profile_path == null" />
+              <img
+                @click="transitionToActorDetails(a.id)"
+                src="@/assets/image.png"
+                v-if="a.profile_path == null"
+              />
               <bdi @click="transitionToActorDetails(a.id)"
                 >{{ a.name }} <br /><i>{{ a.character }}</i></bdi
               >
@@ -147,45 +191,36 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
       Episodes: null,
       EpisodesDetails: null,
       OpenMore: null,
-      SeriesNumber: null
+      SeriesNumber: null,
     };
   },
   methods: {
-transitionToActorDetails(id){
-      this.$router.push({ name: 'actorDetails', params: { id } })
-}
+    transitionToActorDetails(id) {
+      this.$router.push({ name: "actorDetails", params: { id } });
+    },
   },
-  created() {
+  async created() {
     const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
-    fetch(
-      `https://api.themoviedb.org/3/tv/${this.$route.params.id}/season/${this.$route.params.number}?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        this.Episodes = data.episodes;
-      });
-    fetch(
-      `https://api.themoviedb.org/3/tv/${this.$route.params.id}?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        this.EpisodesDetails = data;
-        if(this.EpisodesDetails.seasons[0].name !== "Specials"){
-        this.SeriesNumber = this.$route.params.number - 1;
-        }else{
-        this.SeriesNumber = this.$route.params.number;
-        }
-      });
+    const season = await axios.get(
+      `tv/${this.$route.params.id}/season/${this.$route.params.number}?api_key=${ApiKey}`
+    );
+    this.Episodes = season.data.episodes;
+    const seasonEpisodeDetails = await axios.get(
+      `tv/${this.$route.params.id}?api_key=${ApiKey}`
+    );
+    this.EpisodesDetails = seasonEpisodeDetails.data;
+    if (this.EpisodesDetails.seasons[0].name !== "Specials") {
+      this.SeriesNumber = this.$route.params.number - 1;
+    } else {
+      this.SeriesNumber = this.$route.params.number;
+    }
   },
   filters: {
     details(value) {
@@ -207,16 +242,16 @@ transitionToActorDetails(id){
 </script>
 
 <style scoped>
-.wrapper h3{
-        position: absolute;
-    left: 325px;
-    top: 118px;
+.wrapper h3 {
+  position: absolute;
+  left: 325px;
+  top: 118px;
 }
 .col-md-5 {
-    margin: 15px 0;
+  margin: 15px 0;
 }
-.first_col{
-    margin: 15px;
+.first_col {
+  margin: 15px;
 }
 .row button {
   width: 80px;
@@ -225,7 +260,6 @@ bdi {
   display: inline-block;
   position: absolute;
   margin: 10px;
- 
 }
 .second_col {
   padding: 8px;
@@ -249,8 +283,8 @@ bdi {
   background-color: white;
   margin: 3px 0 0 580px;
 }
-.episode button:hover{
-    color: silver;
+.episode button:hover {
+  color: silver;
 }
 h5 {
   margin: 10px 0 0 100px;

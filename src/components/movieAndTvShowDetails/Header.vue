@@ -114,6 +114,7 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
   props: {
     endpointType: {
@@ -133,40 +134,25 @@ export default {
       this.$router.push({ name: "actorDetails", params: { id } });
     },
   },
-  created() {
+  async created() {
     const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
 
-    fetch(
-      `https://api.themoviedb.org/3/${this.endpointType}/${this.$route.params.id}?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        this.movieAndTvDetails = data;
-      });
-    fetch(
-      `https://api.themoviedb.org/3/${this.endpointType}/${this.$route.params.id}/credits?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        this.actors = data;
-      });
-    fetch(
-      `https://api.themoviedb.org/3/${this.endpointType}/${this.$route.params.id}/videos?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        if (data.results.length > 0) {
-          this.youTubeURL = data.results[0].key;
-        } else {
-          this.youTubeURL = "";
-        }
-      });
+    const details = await axios.get(
+      `${this.endpointType}/${this.$route.params.id}?api_key=${ApiKey}`
+    );
+    this.movieAndTvDetails = details.data;
+    const allActors = await axios.get(
+      `${this.endpointType}/${this.$route.params.id}/credits?api_key=${ApiKey}`
+    );
+    this.actors = allActors.data;
+    const url = await axios.get(
+      `${this.endpointType}/${this.$route.params.id}/videos?api_key=${ApiKey}`
+    );
+    if (url.data.results.length > 0) {
+      this.youTubeURL = url.data.results[0].key;
+    } else {
+      this.youTubeURL = "";
+    }
   },
   filters: {
     "to-uppercase"(value) {

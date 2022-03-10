@@ -1,20 +1,31 @@
 <template>
   <div>
-       <div class="wrapper" v-if="actors" >
+    <div class="wrapper" v-if="actors">
       <h4>Top Billed Cast</h4>
-      
-        <div class="actors_and_pictures"  v-for="interest in actors.cast.slice(0, 8)" :key="interest.id" @click="transitionToActorDetails(interest.id)">
-        <img v-if="interest.profile_path != null"
+
+      <div
+        class="actors_and_pictures"
+        v-for="interest in actors.cast.slice(0, 8)"
+        :key="interest.id"
+        @click="transitionToActorDetails(interest.id)"
+      >
+        <img
+          v-if="interest.profile_path != null"
           :src="
-            'https://themoviedb.org/t/p/w440_and_h660_face' + interest.profile_path
+            'https://themoviedb.org/t/p/w440_and_h660_face' +
+            interest.profile_path
           "
         />
-        <img v-if="interest.profile_path == null" src="@/assets/image.png">
+        <img v-if="interest.profile_path == null" src="@/assets/image.png" />
         <p>{{ interest.name }} <br /></p>
         <label>{{ interest.character }}</label>
       </div>
-      
-      <a @click="transitionToFilmActors(actors.id)" v-if="actors.cast.length > 7">View More</a>
+
+      <a
+        @click="transitionToFilmActors(actors.id)"
+        v-if="actors.cast.length > 7"
+        >View More</a
+      >
     </div>
     <strong>Full Cast & Crew </strong>
     <hr />
@@ -22,40 +33,38 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
-           props: {
-endpointType: {
-    type: String
-}
+  props: {
+    endpointType: {
+      type: String,
     },
-data(){
-    return{
-actors: null
-    }
-},
-methods: {
-    transitionToFilmActors(id){
-     this.$router.push({ name: 'filmActors', params: { id, type: this.endpointType } })
-   },
-   transitionToActorDetails(id){
-     this.$router.push({ name: 'actorDetails', params: { id } })
-
-   }
-},
-created() {
+  },
+  data() {
+    return {
+      actors: null,
+    };
+  },
+  methods: {
+    transitionToFilmActors(id) {
+      this.$router.push({
+        name: "filmActors",
+        params: { id, type: this.endpointType },
+      });
+    },
+    transitionToActorDetails(id) {
+      this.$router.push({ name: "actorDetails", params: { id } });
+    },
+  },
+  async created() {
     const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
 
-    fetch(
-      `https://api.themoviedb.org/3/${this.endpointType}/${this.$route.params.id}/credits?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        this.actors = data;
-      });
-}
-}
+    const allActors = await axios.get(
+      `${this.endpointType}/${this.$route.params.id}/credits?api_key=${ApiKey}`
+    );
+    this.actors = allActors.data;
+  },
+};
 </script>
 
 <style scoped>

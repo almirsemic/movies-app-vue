@@ -1,3 +1,6 @@
+import VueRouter from 'vue-router';
+import store from './vuex';
+import Vue from 'vue';
 import Home from './components/Home';
 import MostPopularMovies from './components/movies/MostPopularMovies';
 import NowPlayingMovies from './components/movies/NowPlayingMovies';
@@ -15,9 +18,11 @@ import TvShowDetails from './components/TvShowDetails.vue';
 import Seasons from './components/movieAndTvShowDetails/Seasons';
 import Episodes from './components/movieAndTvShowDetails/Episodes';
 import ActorDetails from './components/ActorDetails';
+import Login from './components/Login.vue';
+import Profile from './components/Account/Profile';
 
-export default [
-	{ path: '/', component: Home },
+const routes =  [
+	{ path: '/', name: 'home', component: Home },
 	{ path: '/movie/popular', component: MostPopularMovies },
 	{ path: '/movie/now_playing', component: NowPlayingMovies },
 	{ path: '/movie/upcoming', component: UpcomingMovies },
@@ -33,5 +38,46 @@ export default [
 	{ path: '/tv/:id', name: 'tvShowDetails', component: TvShowDetails },
 	{ path: '/tv/:id/seasons', name: 'seasons', component: Seasons },
 	{ path: '/tv/:id/seasons/:number', name: 'episodes', component: Episodes },
-	{ path: '/person/:id', name: 'actorDetails', component: ActorDetails }
+	{ path: '/person/:id', name: 'actorDetails', component: ActorDetails },
+	{
+		path: '/login',
+		name: 'login',
+		component: Login,
+		meta: {
+			requiresAuth: true
+		}
+	},
+	{
+		path: '/profile',
+		component: Profile,
+		meta: {
+			requiresProfile: true
+		}
+	}
 ];
+
+Vue.use(VueRouter);
+
+const router = new VueRouter({
+	routes,
+	mode: 'history'
+});
+
+router.beforeEach((to, from, next) => {
+	if (to.matched.some((record) => record.meta.requiresAuth)) {
+		if (!store.getters.user) {
+			next();
+			return;
+		}
+		next('/profile');
+	} else {
+		next();
+	}
+	if (to.matched.some((record) => record.meta.requiresProfile)) {
+		next('/login');
+	} else {
+		next();
+	}
+});
+
+export default router;

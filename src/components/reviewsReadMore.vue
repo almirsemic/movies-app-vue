@@ -7,16 +7,12 @@
     <div class="wrapper">
       <div class="wrapper_one">
         <h2 v-if="MovieDetails.title">
-          {{ MovieDetails.title }}({{
-            MovieDetails.release_date.slice(0, 4)
-          }})
+          {{ MovieDetails.title }}({{ MovieDetails.release_date.slice(0, 4) }})
         </h2>
         <h2 v-if="MovieDetails.name">
-           {{ MovieDetails.name }}({{
-            MovieDetails.first_air_date.slice(0, 4)
-          }})
+          {{ MovieDetails.name }}({{ MovieDetails.first_air_date.slice(0, 4) }})
         </h2>
-        <p class="subtitle"> 
+        <p class="subtitle">
           Written by {{ review.author }} on {{ review.created_at | date }}
         </p>
         <br /><br /><br />
@@ -45,8 +41,8 @@
     </div>
   </div>
 </template>
-
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -54,30 +50,17 @@ export default {
       review: [],
     };
   },
-  created() {
+  async created() {
     const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
 
-    fetch(
-      `https://api.themoviedb.org/3/review/${this.$route.params.id}?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        this.review = data;
-        return data;
-      })
-      .then((data) => {
-        fetch(
-          `https://api.themoviedb.org/3/${this.$route.params.type}/${data.media_id}?api_key=${ApiKey}`
-        )
-          .then((data) => {
-            return data.json();
-          })
-          .then((data) => {
-            this.MovieDetails = data;
-          });
-      });
+    const movieReview = await axios.get(
+      `review/${this.$route.params.id}?api_key=${ApiKey}`
+    );
+    this.review = movieReview.data;
+    const details = await axios.get(
+      `${this.$route.params.type}/${movieReview.data.media_id}?api_key=${ApiKey}`
+    );
+    this.MovieDetails = details.data;
   },
   filters: {
     date(value) {

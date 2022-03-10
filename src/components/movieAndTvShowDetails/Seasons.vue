@@ -27,9 +27,10 @@
         </button></router-link
       >
     </div>
-     <div v-if="tvDetails">
-        <div class="season" v-for="season in tvDetails.seasons" :key="season.id">
-        <img v-if="season.poster_path"
+    <div v-if="tvDetails">
+      <div class="season" v-for="season in tvDetails.seasons" :key="season.id">
+        <img
+          v-if="season.poster_path"
           :src="'https://themoviedb.org/t/p/original/' + season.poster_path"
         />
         <img src="@/assets/nophoto.jpg" v-if="season.poster_path == null" />
@@ -50,12 +51,12 @@
             {{ season.overview }}
           </small>
         </p>
+      </div>
     </div>
-     </div>
   </div>
 </template>
-
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -70,18 +71,13 @@ export default {
       });
     },
   },
-  created() {
+  async created() {
     const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
 
-    fetch(
-      `https://api.themoviedb.org/3/tv/${this.$route.params.id}?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        this.tvDetails = data;
-      });
+    const details = await axios.get(
+      `tv/${this.$route.params.id}?api_key=${ApiKey}`
+    );
+    this.tvDetails = details.data;
   },
 };
 </script>

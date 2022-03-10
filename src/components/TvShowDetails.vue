@@ -78,6 +78,7 @@
 import Header from "../components/movieAndTvShowDetails/Header";
 import TopBilledCast from "../components/movieAndTvShowDetails/TopBilledCast";
 import Reviews from "../components/movieAndTvShowDetails/Reviews";
+import axios from "axios";
 
 export default {
   components: {
@@ -102,27 +103,17 @@ export default {
       });
     },
   },
-  created() {
+ async created() {
     const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
 
-    fetch(
-      `https://api.themoviedb.org/3/tv/${this.$route.params.id}?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        this.tvDetails = data;
-      });
-    fetch(
-      `https://api.themoviedb.org/3/tv/${this.$route.params.id}/keywords?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        this.keywords = data.results;
-      });
+    const details = await axios.get(
+      `tv/${this.$route.params.id}?api_key=${ApiKey}`
+    );
+    this.tvDetails = details.data;
+    const allKeywords = await axios.get(
+      `tv/${this.$route.params.id}/keywords?api_key=${ApiKey}`
+    );
+    this.keywords = allKeywords.data.results;    
   },
   filters: {
     "to-uppercase"(value) {

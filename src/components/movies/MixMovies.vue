@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="wrapper">
-      <div v-for="movie in movies" :key="movie.id" class="imagesPosts" @click="movieClick(movie.id)">
+      <div
+        v-for="movie in movies"
+        :key="movie.id"
+        class="imagesPosts"
+        @click="movieClick(movie.id)"
+      >
         <img
           :src="
             'https://themoviedb.org/t/p/w440_and_h660_face' + movie.poster_path
@@ -13,35 +18,31 @@
     <button>Load More</button>
   </div>
 </template>
-
 <script>
+import axios from "axios";
 export default {
-    props: {
-moviesEndpoint: {
-    type: String
-}
+  props: {
+    moviesEndpoint: {
+      type: String,
     },
+  },
   data() {
     return {
       movies: [],
     };
   },
   methods: {
-    movieClick(movieId){
-      this.$router.push({ name: 'movieDetails', params: { id: movieId } })
-    }
+    movieClick(movieId) {
+      this.$router.push({ name: "movieDetails", params: { id: movieId } });
+    },
   },
-  created() {
-      const ApiKey = 'ffebf14b46dcd2b2bb0af17fdfffaa0c';
-    fetch(
-      `https://api.themoviedb.org/3/movie/${this.moviesEndpoint}?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        this.movies = data.results;
-      });
+  async created() {
+    const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
+    
+    const allMovies = await axios.get(
+      `movie/${this.moviesEndpoint}?api_key=${ApiKey}`
+    );
+    this.movies = allMovies.data.results;
   },
 };
 </script>
@@ -51,7 +52,6 @@ moviesEndpoint: {
   margin: 100px 50px 0 330px;
   display: table;
   background-color: #f8f0fb;
-
 }
 
 .wrapper img {
@@ -80,18 +80,18 @@ moviesEndpoint: {
   float: right;
   margin: 20px 10px;
 }
-.imagesPosts:hover{ 
+.imagesPosts:hover {
   background-color: #f8f0fb;
   border: 1px solid #f8f0fb;
 }
 
-button{
+button {
   width: 1080px;
   margin: 0 0 7px 360px;
   text-align: center;
   border-radius: 10px;
-  border: 1px solid #01B4E4;
-  background-color: #01B4E4;
+  border: 1px solid #01b4e4;
+  background-color: #01b4e4;
   color: white;
   font-size: 20px;
 }

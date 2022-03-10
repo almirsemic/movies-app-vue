@@ -1,7 +1,6 @@
 <template>
   <div>
     <p class="numberOfReviews">Reviews ({{ Object.keys(reviews).length }})</p>
-
     <div class="review" v-if="reviews[0]">
       <img
         v-if="
@@ -36,7 +35,6 @@
         </p>
       </div>
     </div>
-
     <button
       v-if="Object.keys(reviews).length != 0"
       type="button"
@@ -47,8 +45,8 @@
     </button>
   </div>
 </template>
-
 <script>
+import axios from "axios";
 export default {
   props: {
     endpointType: {
@@ -75,19 +73,14 @@ export default {
       });
     },
   },
-  created() {
+  async created() {
     const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
 
-    fetch(
-      `https://api.themoviedb.org/3/${this.endpointType}/${this.$route.params.id}/reviews?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        this.reviews = data.results;
-        this.id = data.id;
-      });
+    const reviewsResults = await axios.get(
+      `${this.endpointType}/${this.$route.params.id}/reviews?api_key=${ApiKey}`
+    );
+    this.reviews = reviewsResults.data.results;
+    this.id = reviewsResults.data.id;
   },
   filters: {
     snippet(value) {

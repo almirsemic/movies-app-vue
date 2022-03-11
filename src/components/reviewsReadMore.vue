@@ -6,9 +6,14 @@
     />
     <div class="wrapper">
       <div class="wrapper_one">
-        <h2>
+        <h2 v-if="MovieDetails.title">
           {{ MovieDetails.title }}({{
             MovieDetails.release_date.slice(0, 4)
+          }})
+        </h2>
+        <h2 v-if="MovieDetails.name">
+           {{ MovieDetails.name }}({{
+            MovieDetails.first_air_date.slice(0, 4)
           }})
         </h2>
         <p class="subtitle"> 
@@ -19,7 +24,7 @@
           {{ review.content }}
         </p>
       </div>
-      <router-link :to="'/movie/' + MovieDetails.id"
+      <router-link :to="`/${this.$route.params.type}/` + MovieDetails.id"
         ><button type="button" class="btn btn-secondary">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -64,7 +69,7 @@ export default {
       })
       .then((data) => {
         fetch(
-          `https://api.themoviedb.org/3/movie/${data.media_id}?api_key=${ApiKey}`
+          `https://api.themoviedb.org/3/${this.$route.params.type}/${data.media_id}?api_key=${ApiKey}`
         )
           .then((data) => {
             return data.json();

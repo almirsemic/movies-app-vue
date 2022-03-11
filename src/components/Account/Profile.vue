@@ -18,12 +18,17 @@
         </div>
       </div>
     </div>
+    <MovieTvWatchlist></MovieTvWatchlist>
   </div>
 </template>
 <script>
+import MovieTvWatchlist from '../Account/MovieTvWatchlist.vue'
 import { mapGetters } from "vuex";
 import axios from "axios";
 export default {
+  components: {
+MovieTvWatchlist,
+  },
   computed: {
     ...mapGetters(["user"]),
   },
@@ -33,6 +38,9 @@ export default {
       `account?api_key=ffebf14b46dcd2b2bb0af17fdfffaa0c&session_id=${session.data.session_id}`
     );
     localStorage.setItem("user", JSON.stringify(account.data));
+ /*  const almir = await axios.get(`account/${account.data.id}/watchlist/movies?api_key=ffebf14b46dcd2b2bb0af17fdfffaa0c&session_id=${sessionResponse.data.session_id}`);
+  console.log(almir)
+    console.log(sessionResponse) */
   },
 };
 </script>
@@ -85,4 +93,5 @@ export default {
   font-weight: 600;
   color: white;
 }
+
 </style>

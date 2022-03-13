@@ -28,9 +28,9 @@ export default {
     ...mapGetters(["user"]),
   },
   async created() {
-    const sessionResponse = JSON.parse(localStorage.getItem("session"));
+    const session = JSON.parse(localStorage.getItem("session"));
     const account = await axios.get(
-      `account?api_key=ffebf14b46dcd2b2bb0af17fdfffaa0c&session_id=${sessionResponse.data.session_id}`
+      `account?api_key=ffebf14b46dcd2b2bb0af17fdfffaa0c&session_id=${session.data.session_id}`
     );
     localStorage.setItem("user", JSON.stringify(account.data));
   },

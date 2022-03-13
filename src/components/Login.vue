@@ -14,12 +14,21 @@
           In order to use the editing and rating capabilities of TMDB, as well
           as get personal recommendations you will need to login to your
           account. If you do not have an account, registering for an account is
-          free and simple. <a href="https://www.themoviedb.org/signup" target="_blank">Click here</a> to get started.
+          free and simple.
+          <a href="https://www.themoviedb.org/signup" target="_blank"
+            >Click here</a
+          >
+          to get started.
         </p>
         <br />
         <p>
           If you signed up but didn't get your verification email,
-          <a href="https://www.themoviedb.org/resend-email-verification" target="_blank">click here</a> to have it resent.
+          <a
+            href="https://www.themoviedb.org/resend-email-verification"
+            target="_blank"
+            >click here</a
+          >
+          to have it resent.
         </p>
       </div>
       <div class="verification_invalid" v-if="failVerification">
@@ -68,7 +77,7 @@ export default {
         password: "",
         request_token: "",
       },
-      session_id: "",
+      sessionId: "",
       failVerification: false,
       account: null,
       apiKey: "ffebf14b46dcd2b2bb0af17fdfffaa0c",
@@ -78,41 +87,41 @@ export default {
 
   methods: {
     async login() {
-      const newTokenResponse = await axios.get(
-        `authentication/token/new?api_key=${this.apiKey}`
-      );
-      this.form.request_token = newTokenResponse.data.request_token;
-      const validationTokenResponse = await axios
-        .post(
+      try {
+        const newTokenResponse = await axios.get(
+          `authentication/token/new?api_key=${this.apiKey}`
+        );
+        this.form.request_token = newTokenResponse.data.request_token;
+        const validationTokenResponse = await axios.post(
           `authentication/token/validate_with_login?api_key=${this.apiKey}`,
           this.form
-        )
-        .catch((error) => {
-          console.log(error),
-            !validationTokenResponse
-              ? (this.failVerification = true)
-              : (this.failVerification = false);
-              return;
-        });
-      if(validationTokenResponse){
+        );
+        if (validationTokenResponse) {
           this.success = validationTokenResponse.data.success;
-      const sessionResponse = await axios.post(
-        `authentication/session/new?api_key=${this.apiKey}`,
-        {
-          request_token: this.form.request_token,
+          const accountResonse = await axios.post(
+            `authentication/session/new?api_key=${this.apiKey}`,
+            {
+              request_token: this.form.request_token,
+            }
+          );
+          this.sessionId = accountResonse.data.session_id;
+          localStorage.setItem("session", JSON.stringify(accountResonse));
+          const sessionIdResponse = await axios.get(
+            `account?api_key=${this.apiKey}&session_id=${this.sessionId}`
+          );
+          this.account = sessionIdResponse.data;
+          localStorage.setItem("user", JSON.stringify(sessionIdResponse.data));
+          this.$store.dispatch(
+            "user",
+            JSON.parse(localStorage.getItem("user"))
+          );
+          if (this.success) {
+            this.$router.replace({ name: "home" });
+          }
         }
-      );
-      this.session_id = sessionResponse.data.session_id;
-      localStorage.setItem("session", JSON.stringify(sessionResponse));
-      const sessionIdResponse = await axios.get(
-        `account?api_key=${this.apiKey}&session_id=${this.session_id}`
-      );
-      this.account = sessionIdResponse.data;
-      localStorage.setItem("user", JSON.stringify(sessionIdResponse.data));
-      this.$store.dispatch("user", JSON.parse(localStorage.getItem("user")));
-      if (this.success) {
-        this.$router.replace({ name: "home" });
-      }
+      } catch (error) {
+        console.error(error), (this.failVerification = true);
+        return;
       }
     },
   },

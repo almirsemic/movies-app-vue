@@ -21,7 +21,7 @@ import ActorDetails from './components/ActorDetails';
 import Login from './components/Login.vue';
 import Profile from './components/Account/Profile';
 
-const routes =  [
+const routes = [
 	{ path: '/', name: 'home', component: Home },
 	{ path: '/movie/popular', component: MostPopularMovies },
 	{ path: '/movie/now_playing', component: NowPlayingMovies },
@@ -44,14 +44,14 @@ const routes =  [
 		name: 'login',
 		component: Login,
 		meta: {
-			requiresAuth: true
+			requiresNonAuthenticatedState: true
 		}
 	},
 	{
 		path: '/profile',
 		component: Profile,
 		meta: {
-			requiresProfile: true
+			requiresAuth: true
 		}
 	}
 ];
@@ -64,18 +64,18 @@ const router = new VueRouter({
 });
 
 router.beforeEach((to, from, next) => {
-	if (to.matched.some((record) => record.meta.requiresAuth)) {
-		if (!store.getters.user) {
-			next();
+	if (to.matched.some((record) => record.meta.requiresNonAuthenticatedState)) {
+		if (store.getters.user) {
+			next('/profile');
 			return;
 		}
-		next('/profile');
-	} else {
-		next();
 	}
-	if (to.matched.some((record) => record.meta.requiresProfile)) {
-		next('/login');
-	} else {
+	next();
+	if (to.matched.some((record) => record.meta.requiresAuth)) {
+		if (!store.getters.user) {
+			next('/login');
+			return;
+		}
 		next();
 	}
 });

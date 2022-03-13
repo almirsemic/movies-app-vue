@@ -12,14 +12,14 @@ axios.interceptors.response.use(
 	(error) => {
 		if (error.response.status == 401) {
 			localStorage.clear();
-			router.push('/login').catch(err => {
-        if (
-          err.name !== 'NavigationDuplicated' &&
-          !err.message.includes('Avoided redundant navigation to current location')
-        ) {
-          console.log(err);
-        }
-      });   
+			router.push('/login').catch((err) => {
+				if (
+					err.name !== 'NavigationDuplicated' &&
+					!err.message.includes('Avoided redundant navigation to current location')
+				) {
+					console.error(err);
+				}
+			});
 		}
 		return Promise.reject(error);
 	}

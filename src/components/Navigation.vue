@@ -27,7 +27,14 @@
       <button>People</button>
     </div>
     <div class="login">
-      <button>Login</button>
+      <router-link to="/login" v-if="!user"><button>Login</button></router-link>
+      <div v-if="user" class="logout">
+        <p>{{ user.username.slice(0, 1).toUpperCase() }}</p>
+        <div class="options">
+          <router-link to="/profile">Profile</router-link>
+          <a @click="logout()">Logout</a>
+        </div>
+      </div>
     </div>
     <div class="join">
       <button>Join TMDB</button>
@@ -39,10 +46,21 @@
     </div>
   </div>
 </template>
-
 <script>
-export default {};
-</script>
+import { mapGetters } from "vuex";
+export default {
+  methods: {
+    logout() {
+      this.$store.dispatch("user", null);
+      localStorage.clear();
+      this.$router.push({ name: "login" });
+    },
+  },
+  computed: {
+    ...mapGetters(["user"]),
+  },
+};
+</script> 
 
 <style scoped>
 .Navbar {
@@ -134,6 +152,47 @@ export default {};
 .tvshows img {
   margin-left: 5px;
 }
+
+.options {
+  display: none;
+  position: absolute;
+  background-color: white;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  height: 48px;
+  margin: -14px 0;
+  border-radius: 5px;
+}
+.logout:hover .options {
+  display: block;
+}
+.logout a {
+  color: black;
+  padding-left: 5px;
+  text-decoration: none;
+  display: block;
+}
+.logout a:hover {
+  background-color: #ddd;
+  border-radius: 5px;
+}
+.logout {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #1e4d74;
+  margin: 0 35px;
+}
+
+.logout p {
+  text-align: center;
+  padding: 2px 0 3px 0;
+  border: 1px solid white;
+  border-radius: 50px;
+  color: white;
+}
+
 .two {
   display: none;
   position: absolute;

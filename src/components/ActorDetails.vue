@@ -150,7 +150,7 @@
 
 <script>
 import Department from "../components/Department.vue";
-
+import axios from "axios";
 export default {
   components: {
     Department,
@@ -168,82 +168,71 @@ export default {
     };
   },
 
-  created() {
+  async created() {
     const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
 
-    fetch(
-      `https://api.themoviedb.org/3/person/${this.$route.params.id}?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        this.actors = data;
+    const allActors = await axios.get(
+      `person/${this.$route.params.id}?api_key=${ApiKey}`
+    );
+    this.actors = allActors.data;
+    const allCasts = await axios.get(
+      `person/${this.$route.params.id}/combined_credits?api_key=${ApiKey}`
+    );
+    this.casts = allCasts.data.cast;
+    function clone(obj) {
+      for (let i = 0; i < obj.length; i++) {
+        if (obj[i].first_air_date || obj[i].first_air_date == "") {
+          Object.defineProperty(
+            obj[i],
+            "release_date",
+            Object.getOwnPropertyDescriptor(obj[i], "first_air_date")
+          );
+          delete obj[i]["first_air_date"];
+        }
+      }
+      obj.sort((a, b) => {
+        return (
+          (new Date(b.release_date).getTime() || +Infinity) -
+          (new Date(a.release_date).getTime() || +Infinity)
+        );
       });
-    fetch(
-      `https://api.themoviedb.org/3/person/${this.$route.params.id}/combined_credits?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        this.casts = data.cast;
+    }
+    clone(this.casts);
+    for (let i = 0; i < allCasts.data.crew.length; i++) {
+      if (allCasts.data.crew[i].department == "Directing") {
+        this.departmentDirecting.push(allCasts.data.crew[i]);
+      } else if (allCasts.data.crew[i].department == "Crew") {
+        this.departmentCrew.push(allCasts.data.crew[i]);
+      } else if (allCasts.data.crew[i].department == "Production") {
+        this.departmentProduction.push(allCasts.data.crew[i]);
+      } else if (allCasts.data.crew[i].department == "Writing") {
+        this.departmentWriting.push(allCasts.data.crew[i]);
+      } else if (allCasts.data.crew[i].department == "Creator") {
+        this.departmentCreator.push(allCasts.data.crew[i]);
+      }
+    }
+    clone(this.departmentDirecting);
+    clone(this.departmentCrew);
+    clone(this.departmentProduction);
+    clone(this.departmentWriting);
+    clone(this.departmentCreator);
 
-        function clone(obj) {
-          for (let i = 0; i < obj.length; i++) {
-            if (obj[i].first_air_date || obj[i].first_air_date == "") {
-              Object.defineProperty(
-                obj[i],
-                "release_date",
-                Object.getOwnPropertyDescriptor(obj[i], "first_air_date")
-              );
-              delete obj[i]["first_air_date"];
-            }
-          }
-          obj.sort((a, b) => {
-            return (
-              (new Date(b.release_date).getTime() || +Infinity) -
-              (new Date(a.release_date).getTime() || +Infinity)
-            );
-          });
-        }
-        clone(this.casts);
-        for (let i = 0; i < data.crew.length; i++) {
-          if (data.crew[i].department == "Directing") {
-            this.departmentDirecting.push(data.crew[i]);
-          } else if (data.crew[i].department == "Crew") {
-            this.departmentCrew.push(data.crew[i]);
-          } else if (data.crew[i].department == "Production") {
-            this.departmentProduction.push(data.crew[i]);
-          } else if (data.crew[i].department == "Writing") {
-            this.departmentWriting.push(data.crew[i]);
-          } else if (data.crew[i].department == "Creator") {
-            this.departmentCreator.push(data.crew[i]);
-          }
-        }
-        clone(this.departmentDirecting);
-        clone(this.departmentCrew);
-        clone(this.departmentProduction);
-        clone(this.departmentWriting);
-        clone(this.departmentCreator);
+    for (let j = 0; j < allCasts.data.cast.length; j++) {
+      if (allCasts.data.cast[j].vote_count > 3000) {
+        this.images.push(allCasts.data.cast[j]);
+      }
+    }
 
-        for (let j = 0; j < data.cast.length; j++) {
-          if (data.cast[j].vote_count > 3000) {
-            this.images.push(data.cast[j]);
-          }
-        }
+    const uniqueIds = [];
 
-        const uniqueIds = [];
+    this.images = this.images.filter((element) => {
+      const isDuplicate = uniqueIds.includes(element.id);
 
-        this.images = this.images.filter((element) => {
-          const isDuplicate = uniqueIds.includes(element.id);
-
-          if (!isDuplicate) {
-            uniqueIds.push(element.id);
-            return true;
-          }
-        });
-      });
+      if (!isDuplicate) {
+        uniqueIds.push(element.id);
+        return true;
+      }
+    });
   },
   filters: {
     gender(value) {

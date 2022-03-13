@@ -1,7 +1,12 @@
 <template>
   <div>
     <div class="wrapper">
-      <div v-for="tv in tvShows" :key="tv.id" class="imagesPosts" @click="movieClick(tv.id)">
+      <div
+        v-for="tv in tvShows"
+        :key="tv.id"
+        class="imagesPosts"
+        @click="movieClick(tv.id)"
+      >
         <img
           :src="
             'https://themoviedb.org/t/p/w440_and_h660_face' + tv.poster_path
@@ -13,8 +18,8 @@
     <button>Load More</button>
   </div>
 </template>
-
 <script>
+import axios from "axios";
 export default {
   props: {
     tvShowsEndpoint: {
@@ -25,23 +30,19 @@ export default {
     return {
       tvShows: [],
     };
-  }, 
-  methods: {
-    movieClick(tvId){
-      this.$router.push({ name: 'tvShowDetails', params: { id: tvId } })
-    }
   },
-  created() {
+  methods: {
+    movieClick(tvId) {
+      this.$router.push({ name: "tvShowDetails", params: { id: tvId } });
+    },
+  },
+  async created() {
     const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
-    fetch(
-      `https://api.themoviedb.org/3/tv/${this.tvShowsEndpoint}?api_key=${ApiKey}`
-    )
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        this.tvShows = data.results;
-      });
+
+    const allTvShows = await axios.get(
+      `tv/${this.tvShowsEndpoint}?api_key=${ApiKey}`
+    );
+    this.tvShows = allTvShows.data.results;
   },
 };
 </script>

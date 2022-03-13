@@ -18,12 +18,17 @@
         </div>
       </div>
     </div>
+    <MovieTvWatchlist></MovieTvWatchlist>
   </div>
 </template>
 <script>
+import MovieTvWatchlist from '../Account/MovieTvWatchlist.vue'
 import { mapGetters } from "vuex";
 import axios from "axios";
 export default {
+  components: {
+MovieTvWatchlist,
+  },
   computed: {
     ...mapGetters(["user"]),
   },
@@ -85,4 +90,5 @@ export default {
   font-weight: 600;
   color: white;
 }
+
 </style>

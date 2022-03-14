@@ -3,7 +3,7 @@
     <WatchlistAndFavorite
       :watchlist="watchlist"
       :endpointType="endpointType"
-      :type="'Watchlist'"
+      :type="'Favorites'"
     ></WatchlistAndFavorite>
   </div>
 </template>

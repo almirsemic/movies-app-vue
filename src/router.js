@@ -20,6 +20,7 @@ import Episodes from './components/movieAndTvShowDetails/Episodes';
 import ActorDetails from './components/ActorDetails';
 import Login from './components/Login.vue';
 import Profile from './components/Account/Profile';
+import Search from './components/Search.vue';
 
 const routes = [
 	{ path: '/', name: 'home', component: Home },
@@ -39,6 +40,7 @@ const routes = [
 	{ path: '/tv/:id/seasons', name: 'seasons', component: Seasons },
 	{ path: '/tv/:id/seasons/:number', name: 'episodes', component: Episodes },
 	{ path: '/person/:id', name: 'actorDetails', component: ActorDetails },
+	{ path: '/search', name: 'search', component: Search},
 	{
 		path: '/login',
 		name: 'login',

@@ -1,5 +1,35 @@
 <template>
   <div v-if="movieAndTvDetails && actors">
+    <h4 v-if="successful">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="26"
+        height="26"
+        fill="currentColor"
+        class="bi bi-check-all"
+        viewBox="0 0 16 16"
+        color="white"
+      >
+        <path
+          d="M8.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L2.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093L8.95 4.992a.252.252 0 0 1 .02-.022zm-.92 5.14.92.92a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 1 0-1.091-1.028L9.477 9.417l-.485-.486-.943 1.179z"
+        /></svg
+      >Successful <i>successful add !!!</i>
+    </h4>
+    <h4 v-if="unsuccessfully">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="26"
+        height="26"
+        color="white"
+        fill="currentColor"
+        class="bi bi-x"
+        viewBox="0 0 16 16"
+      >
+        <path
+          d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"
+        /></svg
+      >Unsuccessfully <i>please login !!!</i>
+    </h4>
     <div
       class="background"
       :style="{
@@ -56,8 +86,8 @@
           >
         </div>
         <div class="icons">
-          <a><img src="@/assets/heart.png" /></a>
-          <a><img src="@/assets/bookmark.png" /></a>
+          <a @click="addFavorite()"><img src="@/assets/heart.png" /></a>
+          <a @click="addWatchlist()"><img src="@/assets/bookmark.png" /></a>
           <a><img src="@/assets/star.png" /></a>
         </div>
         <div class="play_trailer">
@@ -127,11 +157,59 @@ export default {
       actors: null,
       youTubeWindow: false,
       youTubeURL: "",
+      successful: false,
+      unsuccessfully: false,
     };
   },
   methods: {
     transitionToActorDetails(id) {
       this.$router.push({ name: "actorDetails", params: { id } });
+    },
+    async addWatchlist() {
+      if (JSON.parse(localStorage.getItem("user"))) {
+        const accountId = JSON.parse(localStorage.getItem("user")).id;
+        const session = JSON.parse(localStorage.getItem("session"));
+        await axios.post(
+          `account/${accountId}/watchlist?api_key=ffebf14b46dcd2b2bb0af17fdfffaa0c&session_id=${session.data.session_id}`,
+          {
+            media_type: this.endpointType,
+            media_id: this.$route.params.id,
+            watchlist: true,
+          }
+        );
+        this.successful = true;
+        setTimeout(() => {
+          this.successful = false;
+        }, 3000);
+      } else {
+        this.unsuccessfully = true;
+        setTimeout(() => {
+          this.unsuccessfully = false;
+        }, 3000);
+      }
+    },
+    async addFavorite() {
+      if (JSON.parse(localStorage.getItem("user"))) {
+        const accountId = JSON.parse(localStorage.getItem("user")).id;
+        const session = JSON.parse(localStorage.getItem("session"));
+        await axios.post(
+          `account/${accountId}/favorite?api_key=ffebf14b46dcd2b2bb0af17fdfffaa0c&session_id=${session.data.session_id}`,
+          {
+            media_type: this.endpointType,
+            media_id: this.$route.params.id,
+            favorite: true,
+          }
+        );
+        this.successful = true;
+        setTimeout(() => {
+          this.successful = false;
+        }, 3000);
+      } else {
+        this.unsuccessfully = true;
+        setTimeout(() => {
+          this.unsuccessfully = false;
+        }, 3000);
+      }
     },
   },
   async created() {
@@ -170,6 +248,18 @@ export default {
 </script>
 
 <style scoped>
+h4 {
+  position: fixed;
+  background-color: rgb(92, 179, 92);
+  width: 240px;
+  color: white;
+  height: 100px;
+  margin: -10px 0 0 1250px;
+  text-align: center;
+  padding: 20px 0;
+  border-radius: 5px;
+  z-index: 1;
+}
 .background {
   color: white;
   width: 100%;
@@ -242,6 +332,9 @@ export default {
   padding: 8px;
   margin-left: 10px;
   background-color: #032541;
+}
+.icons a:hover {
+  background-color: #ccc;
 }
 .play_trailer {
   position: absolute;

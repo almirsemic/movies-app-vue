@@ -40,9 +40,11 @@
       <button>Join TMDB</button>
     </div>
     <div class="search">
-      <button>
+     <router-link to="/search">
+        <button>
         <a><img src="@/assets/search.png" /></a>
       </button>
+     </router-link>
     </div>
   </div>
 </template>

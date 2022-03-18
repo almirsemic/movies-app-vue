@@ -107,7 +107,7 @@ export default {
     },
   },
   async created() {
-    const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
+    const ApiKey = process.env.VUE_APP_API_KEY;
 
     const allActors = await axios.get(
       `${this.$route.params.type}/${this.$route.params.id}/credits?api_key=${ApiKey}`

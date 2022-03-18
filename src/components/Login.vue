@@ -80,7 +80,7 @@ export default {
       sessionId: "",
       failVerification: false,
       account: null,
-      apiKey: "ffebf14b46dcd2b2bb0af17fdfffaa0c",
+      apiKey: process.env.VUE_APP_API_KEY,
       success: false,
     };
   },

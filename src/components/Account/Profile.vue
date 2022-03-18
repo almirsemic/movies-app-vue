@@ -117,7 +117,7 @@ export default {
     });
     const session = JSON.parse(localStorage.getItem("session"));
     const account = await axios.get(
-      `account?api_key=ffebf14b46dcd2b2bb0af17fdfffaa0c&session_id=${session.data.session_id}`
+      `account?api_key=${process.env.VUE_APP_API_KEY}&session_id=${session.data.session_id}`
     );
     localStorage.setItem("user", JSON.stringify(account.data));
   },

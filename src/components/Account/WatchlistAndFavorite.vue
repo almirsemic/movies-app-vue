@@ -69,10 +69,12 @@
         </div>
         <Watchlist
           :dataWatchlist="filteredMovie"
+          :type="type"
           v-if="watchlist && movieWatchlist"
         ></Watchlist>
         <Watchlist
           :dataWatchlist="filteredTvShows"
+          :type="type"
           v-if="!watchlist && tvWatchlist"
         ></Watchlist>
       </div>
@@ -169,11 +171,11 @@ export default {
     const sessionResponse = JSON.parse(localStorage.getItem("session"));
     const account = JSON.parse(localStorage.getItem("user"));
     const moviesWatchlistResponse = await axios.get(
-      `account/${account.id}/${this.endpointType}/movies?api_key=ffebf14b46dcd2b2bb0af17fdfffaa0c&session_id=${sessionResponse.data.session_id}`
+      `account/${account.id}/${this.endpointType}/movies?api_key=${process.env.VUE_APP_API_KEY}&session_id=${sessionResponse.data.session_id}`
     );
     this.movieWatchlist = moviesWatchlistResponse.data.results;
     const tvWatchlistResponse = await axios.get(
-      `account/${account.id}/${this.endpointType}/tv?api_key=ffebf14b46dcd2b2bb0af17fdfffaa0c&session_id=${sessionResponse.data.session_id}`
+      `account/${account.id}/${this.endpointType}/tv?api_key=${process.env.VUE_APP_API_KEY}&session_id=${sessionResponse.data.session_id}`
     );
     this.tvWatchlist = tvWatchlistResponse.data.results;
     for (let i = 0; i < this.movieWatchlist.length; i++) {

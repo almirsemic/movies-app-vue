@@ -37,7 +37,7 @@
       </div>
     </div>
     <div class="join">
-      <button>Join TMDB</button>
+      <button><a href="https://www.themoviedb.org/signup" target="_blank">Join TMDB</a></button>
     </div>
     <div class="search">
      <router-link to="/search">
@@ -65,6 +65,10 @@ export default {
 </script> 
 
 <style scoped>
+.join a{
+  text-decoration: none;
+  color: white;
+}
 .Navbar {
   background-color: #032541;
   height: 60px;

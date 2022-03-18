@@ -170,7 +170,7 @@ export default {
         const accountId = JSON.parse(localStorage.getItem("user")).id;
         const session = JSON.parse(localStorage.getItem("session"));
         await axios.post(
-          `account/${accountId}/watchlist?api_key=ffebf14b46dcd2b2bb0af17fdfffaa0c&session_id=${session.data.session_id}`,
+          `account/${accountId}/watchlist?api_key=${process.env.VUE_APP_API_KEY}&session_id=${session.data.session_id}`,
           {
             media_type: this.endpointType,
             media_id: this.$route.params.id,
@@ -193,7 +193,7 @@ export default {
         const accountId = JSON.parse(localStorage.getItem("user")).id;
         const session = JSON.parse(localStorage.getItem("session"));
         await axios.post(
-          `account/${accountId}/favorite?api_key=ffebf14b46dcd2b2bb0af17fdfffaa0c&session_id=${session.data.session_id}`,
+          `account/${accountId}/favorite?api_key=${process.env.VUE_APP_API_KEY}&session_id=${session.data.session_id}`,
           {
             media_type: this.endpointType,
             media_id: this.$route.params.id,
@@ -213,7 +213,7 @@ export default {
     },
   },
   async created() {
-    const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
+    const ApiKey = process.env.VUE_APP_API_KEY;
 
     const details = await axios.get(
       `${this.endpointType}/${this.$route.params.id}?api_key=${ApiKey}`

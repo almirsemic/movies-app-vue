@@ -207,7 +207,7 @@ export default {
     },
   },
   async created() {
-    const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
+    const ApiKey = process.env.VUE_APP_API_KEY;
     const season = await axios.get(
       `tv/${this.$route.params.id}/season/${this.$route.params.number}?api_key=${ApiKey}`
     );

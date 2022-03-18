@@ -143,7 +143,7 @@ export default {
     async searchReq() {
       if (this.search.length >= 1) {
         const searchResponse = await axios.get(
-          `search/multi?api_key=ffebf14b46dcd2b2bb0af17fdfffaa0c&query=${this.search}`
+          `search/multi?api_key=${process.env.VUE_APP_API_KEY}&query=${this.search}`
         );
         this.data = searchResponse.data.results;
       }
@@ -151,7 +151,7 @@ export default {
     async searchRes(search) {
       if (search.length > 0) {
         const searchResponse = await axios.get(
-          `search/multi?api_key=ffebf14b46dcd2b2bb0af17fdfffaa0c&query=${search}`
+          `search/multi?api_key=${process.env.VUE_APP_API_KEY}&query=${search}`
         );
         this.resultSearch = searchResponse.data.results;
         this.filterSearch = this.resultSearch;

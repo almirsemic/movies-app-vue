@@ -80,7 +80,7 @@ export default {
     },
   },
   async created() {
-    const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
+    const ApiKey = process.env.VUE_APP_API_KEY;
 
     const allReviews = await axios.get(
       `${this.$route.params.type}/${this.$route.params.id}/reviews?api_key=${ApiKey}`

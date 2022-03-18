@@ -196,7 +196,7 @@ export default {
         const accountId = JSON.parse(localStorage.getItem("user")).id;
         const session = JSON.parse(localStorage.getItem("session"));
         await axios.post(
-          `account/${accountId}/watchlist?api_key=ffebf14b46dcd2b2bb0af17fdfffaa0c&session_id=${session.data.session_id}`,
+          `account/${accountId}/watchlist?api_key=${process.env.VUE_APP_API_KEY}&session_id=${session.data.session_id}`,
           {
             media_type: type,
             media_id: typeId,
@@ -213,7 +213,7 @@ export default {
         const accountId = JSON.parse(localStorage.getItem("user")).id;
         const session = JSON.parse(localStorage.getItem("session"));
         await axios.post(
-          `account/${accountId}/favorite?api_key=ffebf14b46dcd2b2bb0af17fdfffaa0c&session_id=${session.data.session_id}`,
+          `account/${accountId}/favorite?api_key=${process.env.VUE_APP_API_KEY}&session_id=${session.data.session_id}`,
           {
             media_type: type,
             media_id: typeId,
@@ -227,7 +227,7 @@ export default {
     },
   },
   async created() {
-    const ApiKey = "ffebf14b46dcd2b2bb0af17fdfffaa0c";
+    const ApiKey = process.env.VUE_APP_API_KEY;
 
     const allMovies = await axios.get(
       `movie/${this.moviesEndpoint}?api_key=${ApiKey}`

@@ -19,17 +19,10 @@ npm run build
 ```
 npm run lint
 ```
-
-
-
-
-
-
-
-
-
-
-
+### Link to Herou where he can look at the app
+```
+https://almir-movies.herokuapp.com/
+```
 
 ![picture_1](https://user-images.githubusercontent.com/90575221/158251127-0bfe6b65-a1dc-47dc-aaa9-5af9f75fdfd5.png)
 ![picture_2](https://user-images.githubusercontent.com/90575221/158251653-c9cbadd6-4671-43b6-9542-cd0648bd3f13.png)

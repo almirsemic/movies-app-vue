@@ -41,3 +41,4 @@ https://almir-movies.herokuapp.com/
 ![picture_15](https://user-images.githubusercontent.com/90575221/158252030-41a8b66f-06b2-4420-8730-3d9ad2e69cd1.png)
 ![picture_16](https://user-images.githubusercontent.com/90575221/158252041-d93d04e1-6f34-49d1-9410-12f927ec71ed.png)
 ![picture_17](https://user-images.githubusercontent.com/90575221/158252052-42b298ee-bf37-4a07-b6c9-af46709f3584.png)
+![picture_18](https://user-images.githubusercontent.com/90575221/159376929-8c3ecd5c-2164-4bbe-969d-a74bbf6f59dc.png)

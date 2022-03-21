@@ -1,4 +1,4 @@
-# my movies app
+# Movies Database App
 
 ## Project setup
 ```

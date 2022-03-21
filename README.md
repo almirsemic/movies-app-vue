@@ -19,7 +19,7 @@ npm run build
 ```
 npm run lint
 ```
-### Link to Herou where he can look at the app
+### Link to Heroku where you can view the app
 ```
 https://almir-movies.herokuapp.com/
 ```

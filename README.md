@@ -20,13 +20,7 @@ npm run build
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
-#� �s�e�t�u�p�-�p�r�o�j�e�c�t�
-�
-�#� �n�a�v�i�g�a�t�i�o�n�
-�
-�
+
 
 
 

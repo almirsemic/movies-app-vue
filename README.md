@@ -19,9 +19,9 @@ npm run build
 ```
 npm run lint
 ```
-### Link to Heroku where you can view the app
+### Link to Vercel where you can view the app
 ```
-https://almir-movies.herokuapp.com/
+https://movies-app-vue-almirsemic.vercel.app
 ```
 
 ![picture_1](https://user-images.githubusercontent.com/90575221/158251127-0bfe6b65-a1dc-47dc-aaa9-5af9f75fdfd5.png)
